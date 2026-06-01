@@ -1,4 +1,394 @@
 -
+  title: "Dietary sources of sodium intake in nigerian adults: A population-based cross-sectional study"
+  date: 2025-11-17
+  location: "Scientific Reports"
+  url: https://www.nature.com/articles/s41598-025-23828-9
+-
+  title: "Genetic determinants and genomic consequences of non-leukemogenic somatic point mutations"
+  date: 2025-10-16
+  location: "Nature Communications"
+  url: https://www.nature.com/articles/s41467-025-64236-x
+-
+  title: "Mosaic chromosomal alterations in blood across ancestries using whole-genome sequencing"
+  date: 2023-10-30
+  location: "Nature Genetics"
+  url: https://doi.org/10.1038/s41588-023-01553-1
+-
+  title: "Rapid kidney function decline and increased risk of heart failure in patients with type 2 diabetes: findings from the ACCORD cohort"
+  date: 2023-10-30
+  location: "Cardiovascular Diabotology"
+  url: https://link.springer.com/article/10.1186/s12933-023-01869-6
+-
+  title: "Development and validation of a trans-ancestry polygenic risk score for type 2 diabetes in diverse populations"
+  date: 2022-06-29
+  location: "Genome Medicine"
+  url: https://link.springer.com/article/10.1186/s13073-022-01074-2
+-
+  title: "Rare tandem repeat expansions associate with genes involved in synaptic and neuronal signaling functions in schizophrenia"
+  date: 2022-11-16
+  location: "Molecular Psychiatry"
+  url: https://www.nature.com/articles/s41380-022-01857-4
+-
+  title: "Pleiotropic modifiers of age-related diabetes and neonatal intestinal obstruction in cystic fibrosis"
+  date: 2022-10-06
+  location: "Cell Genomics"
+  url: https://www.cell.com/ajhg/fulltext/S0002-9297(22)00407-4?\_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0002929722004074%3Fshowall%3Dtrue
+-
+  title: "CureSCi Metadata Catalog-Making sickle cell studies findable"
+  date: 2022-12-12
+  location: "PLOS One"
+  url: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0256248
+-
+  title: "Long-term Survival after Hematopoietic Cell Transplant for Sickle Cell Disease Compared to the United States Population"
+  date: 2022-03-15
+  location: "Transplantation and Cellular Therapy"
+  url: https://www.sciencedirect.com/science/article/pii/S2666636722011605
+-
+  title: "A Model of Minor Histocompatibility Antigens in Allogeneic Hematopoietic Cell Transplantation"
+  date: 2021-11-17
+  location: "Frontiers in Immunology"
+  url: https://www.frontiersin.org/journals/immunology/articles/10.3389/fimmu.2021.782152/full
+-
+  title: "Body Weight Correlates with Molecular Variances in Patients with Cancer"
+  date: 2024-03-01
+  location: "Cancer Research"
+  url: https://aacrjournals.org/cancerres/article/84/5/757/734931/Body-Weight-Correlates-with-Molecular-Variances-in
+-
+  title: "Association of Polygenic Risk Score With Blood Pressure and Adverse Cardiovascular Outcomes in Individuals With Type II Diabetes: Insights From the ACCORD Trial"
+  date: 2022-04-04
+  location: "Hypertension"
+  url: https://www.ahajournals.org/doi/10.1161/HYPERTENSIONAHA.122.18976
+-
+  title: "Collaborative Cohort of Cohorts for COVID-19 Research (C4R) Study: Study Design"
+  date: 2022-03-12
+  location: "American Journal of Epidemiology"
+  url: https://academic.oup.com/aje/article/191/7/1153/6547556
+-
+  title: "Age-Related Changes in the Clinical Picture of Long COVID"
+  date: 2025-09-01
+  location: "Journal of the American Geriatrics Society"
+  url: https://agsjournals.onlinelibrary.wiley.com/doi/10.1111/jgs.70043
+-
+  title: "Development and implementation of the National Heart, Lung, and Blood Institute COVID-19 common data elements"
+  date: 2022-09-26
+  location: "Journal of Clinical and Translational Science"
+  url: https://www.cambridge.org/core/journals/journal-of-clinical-and-translational-science/article/development-and-implementation-of-the-national-heart-lung-and-blood-institute-covid19-common-data-elements/DF687DD8150997358AF78F4DCDFA5C55
+-
+  title: "Wearable-derived Sleep Measurements are Associated with Long-COVID in the RECOVER Adult Cohort"
+  date: 2025-09-03
+  location: "Research Square"
+  url: https://www.researchsquare.com/article/rs-7422764/v1
+-
+  title: "Federated analysis of BRCA1 and BRCA2 variation in a Japanese cohort"
+  date: 2022-03-09
+  location: "Cell Genomics"
+  url: https://www.cell.com/cell-genomics/fulltext/S2666-979X(22)00029-5
+-
+  title: "Genetic determinants of telomere length from 109,122 ancestrally diverse whole-genome sequences in TOPMed"
+  date: 2022-01-12
+  location: "Cell Genomics"
+  url: https://www.cell.com/cell-genomics/fulltext/S2666-979X(21)00105-1
+-
+  title: "Inverting the model of genomics data sharing with the NHGRI Genomic Data Science Analysis, Visualization, and Informatics Lab-space"
+  date: 2022-01-12
+  location: "Cell Genomics"
+  url: https://www.cell.com/cell-genomics/fulltext/S2666-979X(21)00106-3
+-
+  title: "Pan-African genome demonstrates how population-specific genome graphs improve high-throughput sequencing data analysis"
+  date: 2022-08-04
+  location: "Nature Communications"
+  url: https://doi.org/10.1038/s41467-022-31724-3
+-
+  title: "Sequencing of 53,831 diverse genomes from the NHLBI TOPMed Program"
+  date: 2021-02-10
+  location: "Nature"
+  url: https://www.nature.com/articles/s41586-021-03205-y
+-
+  title: "A phenome-wide association study of methylated GC-rich repeats identifies a GCC repeat expansion in AFF3 associated with intellectual disability"
+  date: 2024-09-23
+  location: "Nature Genetics"
+  url: https://www.nature.com/articles/s41588-024-01917-1
+-
+  title: "Aberrant activation of TCL1A promotes stem cell expansion in clonal haematopoiesis"
+  date: 2023-04-12
+  location: "Nature"
+  url: https://www.nature.com/articles/s41586-023-05806-1
+-
+  title: "Accounting for population structure in genetic studies of cystic fibrosis"
+  date: 2022-07-14
+  location: "HGG Advances"
+  url: https://www.cell.com/hgg-advances/fulltext/S2666-2477(22)00033-1
+-
+  title: "Opportunities and challenges for the use of common controls in sequencing studies"
+  date: 2022-05-17
+  location: "Nature Reviews Genetics"
+  url: https://www.nature.com/articles/s41576-022-00487-4
+-
+  title: "B-assembler: a circular bacterial genome assembler"
+  date: 2022-05-11
+  location: "BMC Genomics"
+  url: https://link.springer.com/article/10.1186/s12864-022-08577-7
+-
+  title: "Clinical and genetic associations of deep learning-derived cardiac magnetic resonance-based left ventricular mass"
+  date: 2023-03-21
+  location: "Nature Communications"
+  url: https://doi.org/10.1038/s41467-023-37173-w
+-
+  title: "Association of Rare Protein-Truncating DNA Variants in APOB or PCSK9 With Low-density Lipoprotein Cholesterol Level and Risk of Coronary Heart Disease"
+  date: 2023-02-01
+  location: "JAMA Cardiology"
+  url: https://jamanetwork.com/journals/jamacardiology/fullarticle/2801002
+-
+  title: "Neutralizing COVID-19 Convalescent Plasma in Adults Hospitalized With COVID-19"
+  date: 2022-06-30
+  location: "Chest Journal"
+  url: https://journal.chestnet.org/article/S0012-3692(22)01201-6/fulltext
+-
+  title: "A System for Phenotype Harmonization in the National Heart, Lung, and Blood Institute Trans-Omics for Precision Medicine (TOPMed) Program"
+  date: 2021-04-16
+  location: "American Journal of Epidemiology"
+  url: https://academic.oup.com/aje/article/190/10/1977/6228144
+-
+  title: "FAVOR: functional annotation of variants online resource and annotator for variation across the human genome"
+  date: 2022-11-09
+  location: "Nucleic Acids Research"
+  url: https://academic.oup.com/nar/article/51/D1/D1300/6814464
+-
+  title: "Sleep and circadian informatics data harmonization: a workshop report from the Sleep Research Society and Sleep Research Network"
+  date: 2022-01-14
+  location: "Sleep"
+  url: https://academic.oup.com/sleep/article/45/6/zsac002/6507734?guestAccessKey=
+-
+  title: "Expanding the pool of public controls for GWAS via a method for combining genotypes from arrays and sequencing"
+  date: 2021-10-20
+  location: "bioRxiv"
+  url: https://www.biorxiv.org/content/10.1101/2021.10.19.464854v1
+-
+  title: "From biomedical cloud platforms to microservices: next steps in FAIR data and analysis"
+  date: 2022-09-08
+  location: "Scientific Data"
+  url: https://www.nature.com/articles/s41597-022-01619-5
+-
+  title: "MultiSTAAR delivers multi-trait rare variant analysis of biobank-scale sequencing data"
+  date: 2025-02-07
+  location: "Nature Computational Science"
+  url: https://www.nature.com/articles/s43588-025-00766-0
+-
+  title: "Accurate long-read de novo assembly evaluation with Inspector"
+  date: 2021-11-14
+  location: "Genome Biology"
+  url: https://link.springer.com/article/10.1186/s13059-021-02527-4
+-
+  title: "A Dynamic Framework for Semantic Grouping of Common Data Elements (CDE) Using Embeddings and Clustering"
+  date: 2025-06-02
+  location: "arXiv"
+  url: https://arxiv.org/abs/2506.02160
+-
+  title: "Empower an End-to-end Scalable and Interpretable Data Science Ecosystem using Statistics, AI and Domain Scien"
+  date: 2024-08-24
+  location: "KDD '24: Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining"
+  url: https://dl.acm.org/doi/abs/10.1145/3637528.3672194
+-
+  title: "Genomic analysis of 11,555 probands identifies 60 dominant congenital heart disease genes"
+  date: 2025-03-24
+  location: PNAS
+  url: https://doi.org/10.1073/pnas.2420343122
+-
+  title: "Sparse Bernoulli mixture modeling with negative-unlabeled data: an approach to identify and characterize long COVID"
+  date: 2025-03-12
+  location: Biometrics
+  url: https://academic.oup.com/biometrics/article/81/1/ujaf021/8071659
+-
+  title: "Association of Cardiologist Clinic Visits With Cardiovascular Primary Prevention Outcomes Among People With HIV From Underrepresented Racial and Ethnic Groups in the Southern United States"
+  date: 2025-03-07
+  location: Journal of the American Heart Association
+  url: https://www.ahajournals.org/doi/10.1161/JAHA.124.038462
+-
+  title: "Recessive genetic contribution to congenital heart disease in 5,424 probands"
+  date: 2025-03-03
+  location: PNAS
+  url: https://www.pnas.org/doi/10.1073/pnas.2419992122
+-
+  title: "The circulating renin-angiotensin system and mortality among patients hospitalized for COVID-19: a mechanistic substudy of the ACTIV-4 Host Tissue trials"
+  date: 2025-02-27
+  location: American Journal of Physiology-Lung Cellular and Molecular Physiology
+  url: https://journals.physiology.org/doi/full/10.1152/ajplung.00372.2024
+-
+  title: "Shock prediction with dipeptidyl peptidase-3 and renin (SPiDeR) in hypoxemic patients with COVID-19"
+  date: 2024-11-14
+  location: Journal of Critical Care
+  url: https://www.sciencedirect.com/science/article/abs/pii/S0883944124004374?via%3Dihub
+-
+  title: "Whole-genome analysis of plasma fibrinogen reveals population-differentiated genetic regulators with putative liver roles"
+  date: 2024-11-21
+  location: Blood
+  url: https://ashpublications.org/blood/article/144/21/2248/517658/Whole-genome-analysis-of-plasma-fibrinogen-reveals
+-
+  title: "Pre-pregnancy substance use and first trimester cardiovascular health among nulliparous pregnant people: The nuMoM2b Study"
+  date: 2024-09-03
+  location: Paediatric and Perinatal Epidemiology
+  url: https://onlinelibrary.wiley.com/doi/10.1111/ppe.13119
+-
+  title: "Effect of sodium–glucose co-transporter-2 inhibitors on survival free of organ support in patients hospitalised for COVID-19 (ACTIV-4a): a pragmatic, multicentre, open-label, randomised, controlled, platform trial"
+  date: 2024-09-06
+  location: The Lancet Diabetes & Endocrinology
+  url: https://www.thelancet.com/journals/landia/article/PIIS2213-8587(24)00218-3/fulltext
+-
+  title: "Post–Acute Sequelae of Severe Acute Respiratory Syndrome Coronavirus 2 (SARS-CoV-2) After Infection During Pregnancy"
+  date: 2024-09-01
+  location: Obstetrics & Gynecology
+  url: https://journals.lww.com/greenjournal/abstract/2024/09000/post_acute_sequelae_of_severe_acute_respiratory.15.aspx
+-
+  title: "Proteomics and machine learning in the prediction and explanation of low pectoralis muscle area"
+  date: 2024-08-03
+  location: Scientific Reports
+  url: https://www.nature.com/articles/s41598-024-68447-y
+-
+  title: "RECOVER-NEURO: study protocol for a multi-center, multi-arm, phase 2, randomized, active comparator trial evaluating three interventions for cognitive dysfunction in post-acute sequelae of SARS-CoV-2 infection (PASC)"
+  date: 2024-05-17
+  location: Trials
+  url: https://link.springer.com/article/10.1186/s13063-024-08156-z
+-
+  title: "Demographic and Clinical Factors Associated With SARS-CoV-2 Spike 1 Antibody Response Among Vaccinated US Adults: the C4R Study"
+  date: 2024-02-19
+  location: Nature Communications
+  url: https://www.nature.com/articles/s41467-024-45468-9
+-
+  title: "Researching COVID to enhance recovery (RECOVER) tissue pathology study protocol: Rationale, objectives, and design"
+  date: 2024-01-10
+  location: PLOS One
+  url: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0285645
+-
+  title: "Clinically stable covid-19 patients presenting to acute unscheduled episodic care venues have increased risk of hospitalization: secondary analysis of a randomized control trial"
+  date: 2023-05-15
+  location: BMC Infections Diseases
+  url: https://link.springer.com/article/10.1186/s12879-023-08295-9
+-
+  title: "Survival After Invasive or Conservative Management of Stable Coronary Disease"
+  date: 2022-11-06
+  location: Circulation
+  url: https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.122.062714
+-
+  title: "Whole genome sequence association analysis of brain structural volume measures in the NHLBI TOPMed Program highlights novel loci in diverse participants"
+  date: 2025-06-13
+  location: medRxiv
+  url: https://pubmed.ncbi.nlm.nih.gov/40568677/
+-
+  title: "Preventive effect of vaccination on long COVID in adolescents with SARS-CoV-2 infection"
+  date: 2025-12-05
+  location: Vaccine
+  url: https://www.sciencedirect.com/science/article/pii/S0264410X25012046?via%3Dihub
+-
+  title: "Effects of Maternal Feeding Style and Child Eating Behaviors on Body Mass Index in Young Children in the Hispanic Community Health Study/Study of Latinos Family Lifestyle Outcomes Research Study"
+  date: 2026-01-01
+  location: Current Developments in Nutrition
+  url: https://cdn.nutrition.org/article/S2475-2991(25)03073-2/fulltext
+-
+  title: "Long COVID trajectories in the prospectively followed RECOVER-Adult US cohort"
+  date: 2025-11-17
+  location: Nature Communications
+  url: https://www.nature.com/articles/s41467-025-65239-4
+-
+  title: "A multi-ethnic polygenic risk score for chronic kidney disease is associated with increased risk of hypertension in African American individuals"
+  date: 2025-09-26
+  location: BMC Nephrology
+  url: https://link.springer.com/article/10.1186/s12882-025-04425-4
+-
+  title: "Transthyretin Cardiac Amyloidosis in Older Black and Hispanic Individuals With Heart Failure"
+  date: 2025-09-10
+  location: JAMA Cardiology
+  url: https://jamanetwork.com/journals/jamacardiology/article-abstract/2838853#250577066
+-
+  title: "2D Speckle Tracking Strain Echocardiography in Multisystem Inflammatory Syndrome in Children: A Multicenter Analysis From the MUSIC Study"
+  date: 2025-09-03
+  location: "Circulation: Cardiovascular Imaging"
+  url: https://www.ahajournals.org/doi/10.1161/CIRCIMAGING.124.017620
+-
+  title: "Molecular Phenogroups in Heart Failure: Large-Scale Proteomics in a Population-Based Cohort"
+  date: 2025-07-16
+  location: "Circulation: Genomic and Precision Medicine"
+  url: https://www.ahajournals.org/doi/10.1161/CIRCGEN.124.004953
+-
+  title: "CureSCi Metadata Catalog-finding and harmonizing studies for secondary analysis of hydroxyurea use for sickle cell disease"
+  date: 2024-08-19
+  location: bioRxiv
+  url: https://doi.org/10.1371/journal.pone.0309572
+-
+  title: "Genetic Architecture and Analysis Practices of Circulating Metabolites in the NHLBI Trans-Omics for Precision Medicine (TOPMed) Program"
+  date: 2025-11-06
+  location: American Journal of Human Genetics
+  url: http://dx.doi.org/10.1016/j.ajhg.2025.08.022
+-
+  title: "Associations of Prepandemic Lung Function and Structure with COVID-19 Outcomes: The C4R Study"
+  date: 2025-07-01
+  location: American Journal of Respiratory and Critical Care Medicine
+  url: https://doi.org/10.1164/rccm.202408-1656OC
+-
+  title: "Predicting heart failure from 12-lead ECGs using AI"
+  date: 2026-03-03
+  location: Journal of the American College of Cardiology
+  url: https://doi.org/10.1016/j.jacc.2025.10.065
+-
+  title: "Metagenomic Study of the MESA: Detection of Gemella Morbillorum and Association With Coronary Heart Disease"
+  date: 2024-10-01
+  location: Journal of the American Heart Association
+  url: https://doi.org/10.1161/jaha.124.035693
+-
+  title: "An individualized Bayesian method for estimating genomic variants of hypertension"
+  date: 2023-11-07
+  location: BMC Genomics
+  url: https://doi.org/10.1186/s12864-023-09757-9
+-
+  title: "Towards self-describing and FAIR bulk formats for biomedical data"
+  date: 2023-03-13
+  location: PLoS Computational Biology
+  url: https://doi.org/10.1371/journal.pcbi.1010944
+-
+  title: "Leveraging TOPMed Imputation Server and Constructing a Cohort-Specific Imputation Reference Panel to Enhance Genotype Imputation among Cystic Fibrosis Patients"
+  date: 2022-01-11
+  location: HGG Advances
+  url: https://doi.org/10.1016/j.xhgg.2022.100090
+-
+  title: "Secondary Neoplasms After Hematopoietic Cell Transplant for Sickle Cell Disease"
+  date: 2023-01-09
+  location: Journal of Clinical Oncology
+  url: https://doi.org/10.1200/jco.22.01203
+-
+  title: "Centralized clinical research operations reporting for a multi-network, multi-study research program: The NHLBI COVID-19 CONNECTS experience"
+  date: 2025-11-11
+  location: Journal of Clinical and Translational Science
+  url: https://doi.org/10.1017/cts.2025.10189
+-
+  title: "Sleep and Big Data: harnessing data, technology, and analytics for monitoring sleep and improving diagnostics, prediction, and interventions—an era for Sleep-Omics?"
+  date: 2021-04-24
+  location: Sleep
+  url: https://doi.org/10.1093/sleep/zsab107
+-
+  title: "Data sharing in the PRIMED consortium: Design, implementation, and recommendations for future policymaking"
+  date: 2025-08-07
+  location: American Journal of Human Genetics
+  url: https://doi.org/10.1016/j.ajhg.2025.06.004
+-
+  title: "Streamlining large-scale genomic data management: Insights from the UK Biobank whole-genome sequencing data"
+  date: 2025-12-10
+  location: Cell Genomics
+  url: https://doi.org/10.1016/j.xgen.2025.101009
+-
+  title: "Integrating whole genome and transcriptome sequencing to characterize the genetic architecture of isoform variation"
+  date: 2025-11-22
+  location: Nature Communications
+  url: https://doi.org/10.1038/s41467-025-64336-8
+-
+  title: "Relationships among host genetics, gut microbiota, and asthma in US Hispanic/Latino adults"
+  date: 2025-11-20
+  location: Nature Communications
+  url: https://www.nature.com/articles/s41467-025-65028-z
+-
+  title: "PIC-SURE: an open-source platform for integrating clinical and genomic data"
+  date: 2025-12-30
+  location: npj Digital Medicine
+  url: https://www.nature.com/articles/s41746-025-02284-9
+-
   title: "Multimodal data curation via interoperability: use cases with the Medical Imaging and Data Resource Center"
   date: 2025-08-01
   location: Scientific Data
