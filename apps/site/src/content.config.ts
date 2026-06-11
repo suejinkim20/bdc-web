@@ -3,8 +3,8 @@ import { readFile } from 'node:fs/promises';
 import { glob } from 'astro/loaders';
 import { load as loadYaml } from 'js-yaml';
 
-const news = defineCollection({
-  loader: glob({ pattern: '**/index.{md,mdx}', base: './src/content/news' }),
+const latestUpdates = defineCollection({
+  loader: glob({ pattern: '**/index.{md,mdx}', base: './src/content/latest-updates' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -170,7 +170,7 @@ const programs = defineCollection({
 });
 
 export const collections = {
-  news,
+  latestUpdates,
   events,
   publications,
   coverage,

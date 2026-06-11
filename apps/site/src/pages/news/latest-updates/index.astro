@@ -4,7 +4,7 @@ import TagLink from '@components/link/TagLink.astro';
 import NewsList from '@components/news/NewsList.astro';
 import Base from '@layouts/Base.astro';
 
-const posts = (await getCollection('news')).sort(
+const posts = (await getCollection('latestUpdates')).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 
