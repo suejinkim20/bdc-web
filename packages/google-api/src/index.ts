@@ -185,6 +185,104 @@ export async function fetchGoogleSheetValues(
   return data.values ?? [];
 }
 
+type GoogleSheetProperties = {
+  sheetId?: number;
+  title?: string;
+};
+
+type GoogleSheetMetadata = {
+  sheets?: Array<{ properties?: GoogleSheetProperties }>;
+};
+
+/**
+ * Look up a tab's current title from its stable sheet ID (the `gid` in sheet URLs).
+ */
+export async function resolveGoogleSheetTitleById(
+  spreadsheetId: string,
+  sheetId: number,
+  options: GoogleCredentialOptions = {},
+): Promise<string> {
+  const meta = (await fetchGoogleSheet(spreadsheetId, {
+    ...options,
+    includeGridData: false,
+  })) as GoogleSheetMetadata;
+
+  const title = meta.sheets?.find((sheet) => sheet.properties?.sheetId === sheetId)?.properties
+    ?.title;
+
+  if (!title) {
+    throw new Error(`Sheet with id ${sheetId} not found in spreadsheet ${spreadsheetId}.`);
+  }
+
+  return title;
+}
+
+export type GoogleSheetGridRange = {
+  /** 0-based, inclusive. Omit with endRowIndex to read through the last row. */
+  startRowIndex?: number;
+  /** 0-based, exclusive. */
+  endRowIndex?: number;
+  /** 0-based, inclusive. Omit with endColumnIndex to read through the last column. */
+  startColumnIndex?: number;
+  /** 0-based, exclusive. */
+  endColumnIndex?: number;
+};
+
+export type FetchGoogleSheetValuesBySheetIdOptions = GoogleCredentialOptions &
+  GoogleSheetGridRange;
+
+/**
+ * Fetch cell values from a sheet tab by its stable ID (`gid` / `sheetId`) instead of tab name.
+ * Uses the Sheets API batchGetByDataFilter endpoint so renames do not break reads.
+ */
+export async function fetchGoogleSheetValuesBySheetId(
+  spreadsheetId: string,
+  sheetId: number,
+  options: FetchGoogleSheetValuesBySheetIdOptions = {},
+): Promise<string[][]> {
+  const {
+    startRowIndex,
+    endRowIndex,
+    startColumnIndex,
+    endColumnIndex,
+    ...credentialOptions
+  } = options;
+
+  const gridRange: GoogleSheetGridRange & { sheetId: number } = { sheetId };
+  if (startRowIndex !== undefined) gridRange.startRowIndex = startRowIndex;
+  if (endRowIndex !== undefined) gridRange.endRowIndex = endRowIndex;
+  if (startColumnIndex !== undefined) gridRange.startColumnIndex = startColumnIndex;
+  if (endColumnIndex !== undefined) gridRange.endColumnIndex = endColumnIndex;
+
+  const token = await getAccessToken([SHEETS_READ_SCOPE], credentialOptions);
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values:batchGetByDataFilter`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      dataFilters: [{ gridRange }],
+      majorDimension: "ROWS",
+    }),
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(
+      `Failed to fetch Google Sheet values by sheet id ${sheetId} in ${spreadsheetId}: ${response.status} ${response.statusText}. ${body}`,
+    );
+  }
+
+  const data = (await response.json()) as {
+    valueRanges?: Array<{ valueRange?: { values?: string[][] } }>;
+  };
+
+  return data.valueRanges?.[0]?.valueRange?.values ?? [];
+}
+
 export type UpdateGoogleSheetValuesOptions = GoogleCredentialOptions & {
   valueInputOption?: "RAW" | "USER_ENTERED";
 };
