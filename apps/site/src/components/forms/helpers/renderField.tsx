@@ -47,6 +47,7 @@ import TextareaField from '../fields/TextareaField'
 import DateField from '../fields/DateField'
 import SelectField from '../fields/SelectField'
 import CheckboxField from '../fields/CheckboxField'
+import { fieldErrors } from '../util/errorMessages'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -185,12 +186,10 @@ export function renderField(
           {...commonProps}
           inputType="email"
           register={register(field.name, {
-            required: field.required_for_customers
-              ? 'Please enter a valid email address (e.g. name@example.com).'
-              : false,
+            required: fieldErrors.email.required,
             pattern: {
               value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: 'Please enter a valid email address (e.g. name@example.com).',
+              message: fieldErrors.email.pattern,
             },
           })}
         />
@@ -210,7 +209,7 @@ export function renderField(
           {...commonProps}
           register={register(field.name, {
             required: field.required_for_customers
-              ? `Please enter your ${field.label_for_customers.toLowerCase()}.`
+              ? fieldErrors.text.required(field.label_for_customers)
               : false,
           })}
         />
@@ -224,7 +223,7 @@ export function renderField(
           {...commonProps}
           register={register(field.name, {
             required: field.required_for_customers
-              ? `Please enter your ${field.label_for_customers.toLowerCase()}.`
+              ? fieldErrors.textarea.required(field.label_for_customers)
               : false,
           })}
         />
@@ -253,7 +252,7 @@ export function renderField(
             choices={field.choices}
             register={register(field.name, {
               required: field.required_for_customers
-                ? `Please select a ${field.label_for_customers.toLowerCase()}.`
+                ? fieldErrors.select.required
                 : false,
             })}
             // Only pass onSectionChange if this dropdown actually has sections.
@@ -305,7 +304,7 @@ export function renderField(
           {...commonProps}
           register={register(field.name, {
             required: field.required_for_customers
-              ? `Please check ${field.label_for_customers.toLowerCase()}.`
+              ? fieldErrors.checkbox.required
               : false,
           })}
         />
@@ -319,11 +318,11 @@ export function renderField(
           inputType="number"
           register={register(field.name, {
             required: field.required_for_customers
-              ? `Please enter a number for ${field.label_for_customers.toLowerCase()}.`
+              ? fieldErrors.number.required(field.label_for_customers)
               : false,
             pattern: {
               value: /^-?\d+$/,
-              message: 'Please enter a whole number.',
+              message: fieldErrors.number.pattern,
             },
           })}
         />
@@ -337,11 +336,11 @@ export function renderField(
           inputType="decimal"
           register={register(field.name, {
             required: field.required_for_customers
-              ? `Please enter a number for ${field.label_for_customers.toLowerCase()}.`
+              ? fieldErrors.decimal.required(field.label_for_customers)
               : false,
             pattern: {
               value: /^-?\d*\.?\d+$/,
-              message: 'Please enter a valid number.',
+              message: fieldErrors.decimal.pattern,
             },
           })}
         />
@@ -355,11 +354,11 @@ export function renderField(
           inputType="url"
           register={register(field.name, {
             required: field.required_for_customers
-              ? `Please enter a URL for ${field.label_for_customers.toLowerCase()}.`
+              ? fieldErrors.url.required(field.label_for_customers)
               : false,
             pattern: {
               value: /^https?:\/\/.+/,
-              message: 'Please enter a valid URL starting with http:// or https://',
+              message: fieldErrors.url.pattern,
             },
           })}
         />

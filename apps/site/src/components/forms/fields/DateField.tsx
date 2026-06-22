@@ -25,6 +25,7 @@
 import { DatePicker } from '@trussworks/react-uswds'
 import { Controller } from 'react-hook-form'
 import type { Control, FieldError } from 'react-hook-form'
+import { fieldErrors } from '../util/errorMessages'
 
 interface DateFieldProps {
   name: string
@@ -74,7 +75,7 @@ export default function DateField({
       <Controller
         name={name}
         control={control}
-        rules={{ required: required ? 'Please enter a date.' : false }}
+        rules={{ required: required ? fieldErrors.date.required : false }}
         render={({ field }) => (
           <DatePicker
             id={name}

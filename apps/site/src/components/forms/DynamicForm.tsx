@@ -39,6 +39,7 @@ import { getRecaptchaToken } from '../../util/recaptcha'
 import { renderField } from './helpers/renderField'
 import HoneypotField from './HoneypotField'
 import ConsentField, { CONSENT_FIELD_NAME } from './ConsentField'
+import { fieldErrors, formErrors, formStatus } from './util/errorMessages'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -121,10 +122,8 @@ export default function DynamicForm({
     return (
       <div className="usa-alert usa-alert--error" role="alert">
         <div className="usa-alert__body">
-          <h3 className="usa-alert__heading">This form isn't available right now.</h3>
-          <p className="usa-alert__text">
-            Try again later, or contact us by email if you need help right away.
-          </p>
+          <h3 className="usa-alert__heading">{formStatus.unavailableHeading}</h3>
+          <p className="usa-alert__text">{formStatus.unavailable}</p>
         </div>
       </div>
     )
@@ -141,7 +140,7 @@ export default function DynamicForm({
       <div ref={confirmationRef} tabIndex={-1}>
         <div className="usa-alert usa-alert--success" role="status">
           <div className="usa-alert__body">
-            <h2 className="usa-alert__heading">Your submission was received.</h2>
+            <h2 className="usa-alert__heading">{formStatus.successHeading}</h2>
             <p className="usa-alert__text">
               {/* TODO: Per-form follow-up copy — confirm with content team */}
               Check your inbox for a confirmation email with a copy of your submission.
@@ -206,9 +205,7 @@ export default function DynamicForm({
       setTimeout(() => confirmationRef.current?.focus(), 0)
     } catch {
       setStatus('error')
-      setSubmitError(
-        "Your submission didn't go through. Check your connection and try again."
-      )
+      setSubmitError(formErrors.submission.general)
     }
   }
 
@@ -249,7 +246,7 @@ export default function DynamicForm({
           tabIndex={-1}
         >
           <div className="usa-alert__body">
-            <h2 className="usa-alert__heading">There's a problem with your submission.</h2>
+            <h2 className="usa-alert__heading">{formErrors.summary.heading}</h2>
             <ul className="usa-list">
               {errorFields.map((fieldName) => (
                 <li key={fieldName}>
@@ -293,7 +290,7 @@ export default function DynamicForm({
       {/* Hardcoded fields — not derived from Freshdesk config */}
       <ConsentField
         register={register(CONSENT_FIELD_NAME, {
-          required: 'You must agree before submitting.',
+          required: fieldErrors.consent.required,
         })}
         error={errors[CONSENT_FIELD_NAME] as FieldError | undefined}
       />
