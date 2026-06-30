@@ -179,7 +179,6 @@ const banners = defineCollection({
   }),
 });
 
-
 const eep = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/eep' }),
   schema: ({ image }) =>
