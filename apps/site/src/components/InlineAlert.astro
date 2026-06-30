@@ -1,0 +1,120 @@
+---
+/**
+ * InlineAlert.astro
+ *
+ * A full-width inline alert component based on the USWDS usa-alert pattern.
+ * Supports four variants (info, warning, success, error), an optional slim
+ * style, and an optional no-icon mode.
+ *
+ * Props:
+ *   variant      — Alert type ('info' | 'warning' | 'success' | 'error'). Required.
+ *   slim         — Renders slim variant (less padding). Defaults to false.
+ *   noIcon       — Suppresses the icon. Defaults to false.
+ *   heading      — Optional heading text. Rendered at headingLevel.
+ *   headingLevel — Heading level (2 | 3 | 4). Defaults to 3.
+ *
+ * Usage in MDX:
+ *   <InlineAlert variant="info">
+ *     Some alert text with no heading.
+ *   </InlineAlert>
+ *
+ *   <InlineAlert variant="warning" heading="Heads up" headingLevel={4}>
+ *     Some alert text with a heading.
+ *   </InlineAlert>
+ */
+
+interface Props {
+  variant: 'info' | 'warning' | 'success' | 'error';
+  slim?: boolean;
+  noIcon?: boolean;
+  heading?: string;
+  headingLevel?: 2 | 3 | 4;
+}
+
+const {
+  variant,
+  slim = false,
+  noIcon = false,
+  heading,
+  headingLevel = 3,
+} = Astro.props;
+
+const classes = [
+  'usa-alert',
+  `usa-alert--${variant}`,
+  slim ? 'usa-alert--slim' : '',
+  noIcon ? 'usa-alert--no-icon' : '',
+]
+  .filter(Boolean)
+  .join(' ');
+
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+
+<div class={classes} role="region">
+  <div class="usa-alert__body">
+    <div>
+      {heading && (
+        <Heading class="usa-alert__heading">{heading}</Heading>
+      )}
+      <slot />
+
+    </div>
+  </div>
+</div>
+
+<style>
+  /*
+   * Reset the absolute positioning USWDS applies to the icon via ::before.
+   * This ensures the icon aligns with the first line of content regardless
+   * of whether a heading is present or not.
+   */
+ .usa-alert .usa-alert__body {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.75rem;
+}
+
+  /*
+   * The ::before pseudo-element renders the icon.
+   * Remove absolute positioning and let flexbox handle alignment.
+   */
+  .usa-alert .usa-alert__body::before {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    flex-shrink: 0;
+    margin-top: 0.1rem; /* Optical adjustment to align icon with first line of text */
+  }
+
+  /*
+   * Remove margin-left that USWDS applies to body children to make
+   * room for the absolutely positioned icon — no longer needed with flex.
+   */
+  .usa-alert .usa-alert__body > * {
+    margin-left: 0 !important;
+  }
+
+  /*
+   * Remove default paragraph margins from slotted content.
+   * :global() required because slot content is outside this component's scope.
+   */
+  .usa-alert .usa-alert__body :global(p) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .usa-alert .usa-alert__body :global(p + p) {
+    margin-top: 0.5rem;
+  }
+
+  .usa-alert .usa-alert__body :global(p:first-child) {
+  margin-block-start: 0;
+}
+
+.usa-alert .usa-alert__body :global(p:last-child) {
+  margin-block-end: 0;
+}
+</style>
