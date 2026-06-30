@@ -5,6 +5,7 @@ import EepMember from '@components/eep/EepMember.astro';
 import EepNav from '@components/eep/EepNav.astro';
 import Base from '@layouts/Base.astro';
 import { sortByLastName } from '../../../util/sort-by-lastName';
+import SummaryCard from '@components/SummaryCard.astro'
 
 // Fetch all EEP members
 const members = await getCollection('eep');
@@ -30,14 +31,15 @@ const rendered = await Promise.all(
     <div class="grid-container">
       <h1>BDC External Expert Panel</h1>
       <div class="usa-prose usa-prose--full-width">
-        <Callout title="7 Panel Members" float="right" width="250px">
+        <!-- <Callout title="7 Panel Members" float="right" width="250px">
           <hr/>
           Independent experts advising NHLBI leadership on the BDC ecosystem
-        </Callout>
-        <!-- <SummaryCard icon="people" number="7" qualifier="panel members" float="right">
+        </Callout> -->
+        <SummaryCard icon="people" number="7" qualifier="Panel Members" float="right">
+          Plus 1 Ad-hoc Member
           <hr/>
           Independent experts advising NHLBI leadership on the BDC ecosystem
-        </SummaryCard> -->
+        </SummaryCard>
         <p>
           The BDC External Expert Panel (EEP) is an independent body of experts that informs and advises NHLBI Leadership about the development of the ecosystem.
         </p>

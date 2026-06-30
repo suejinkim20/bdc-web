@@ -26,7 +26,7 @@
  * TODO: Replace placeholder icon with USWDS icon sprite or Icon component
  * once icon system is finalized.
  */
-
+import Icon from '@components/Icon.astro'
 interface Props {
   icon?: string;
   number: string | number;
@@ -40,7 +40,7 @@ const {
   icon,
   number,
   qualifier,
-  width = '240px',
+  width = '350px',
   background = '#e7f6f8', // TODO: var(--color-base-lightest)
   float = 'left',
 } = Astro.props;
@@ -51,9 +51,7 @@ const {
   style={`--summary-card-width: ${width}; background: ${background};`}
 >
   {icon && (
-    <div class="summary-card__icon" aria-hidden="true">
-      <span>📊</span>
-    </div>
+    <Icon name="people" size={4}/>
   )}
   <div class="summary-card__number">{number}</div>
   <div class="summary-card__qualifier">{qualifier}</div>
@@ -66,9 +64,8 @@ const {
   .summary-card {
     width: 100% !important;
     float: none;
-    text-align: center;
     border-radius: 4px;
-    padding: 1.5rem 1rem;
+    padding: 1.5rem;
     margin-bottom: 1rem;
   }
 
@@ -86,26 +83,26 @@ const {
     }
   }
 
-  .summary-card__icon {
-    font-size: 1.5rem;
+  /* .summary-card__icon {
+    font-size: 1.25rem;
     margin-bottom: 0.5rem;
-  }
+  } */
 
   .summary-card__number {
-    font-size: 2rem;
-    font-weight: bold;
+    font-size: 2.25rem;
+    font-weight: 800;
     line-height: 1.1;
   }
 
   .summary-card__qualifier {
-    font-size: 0.9rem;
-    color: #5d6f7b; /* TODO: var(--color-base-dark) */
-    margin-top: 0.25rem;
+    font-size: 1.1rem;
+    margin-top: 0.15rem;
+    font-weight: 600;
   }
 
   .summary-card__content {
-    margin-top: 0.75rem;
-    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
   }
 
   .summary-card__content:empty {

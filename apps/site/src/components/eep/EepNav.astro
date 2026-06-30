@@ -28,11 +28,12 @@ const { members } = Astro.props;
 ---
 
 <nav class="eep-nav" aria-label="Jump to EEP member">
-  <ul class="eep-nav__list" style="max-width: 1000px; margin: auto; background-color: #f1f6f6; padding: 1rem 2rem;border-radius: 5px;">
+  <p class="eep-nav__heading">Jump to EEP member</p>
+  <ul class="eep-nav__list" style=" ">
     {members.map((member) => (
       <li class="eep-nav__item">
         <a href={`#${member.data.slug}`} class="eep-nav__link">
-          {member.data.name}
+          {member.data.adhoc && 'Ad-hoc Member: '}{member.data.name}
         </a>
       </li>
     ))}
@@ -41,9 +42,16 @@ const { members } = Astro.props;
 
 <style>
   .eep-nav {
-    margin: 1.5rem 0 2rem;
+    margin: 2.5rem auto 1.5rem;
+    max-width: 1000px;
+    background-color: #f1f6f6; 
+    padding: 1.5rem 2.5rem;
+    border-radius: 5px;
   }
-
+  .eep-nav__heading {
+    margin: 0 0 0.75rem;
+    font-weight: 600;
+  }
   .eep-nav__list {
     list-style: none;
     padding: 0;
