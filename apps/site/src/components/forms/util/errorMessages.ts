@@ -47,15 +47,13 @@ export const fieldErrors = {
   // Single-line text — custom_text, default_company
   // Takes the customer-facing field label for context.
   text: {
-    required: (label: string) =>
-      `Please enter your ${label.toLowerCase()}.`,
+    required: (label: string) => `Please enter your ${label.toLowerCase()}.`,
   },
 
   // Multi-line text — custom_paragraph, default_description
   // Takes the customer-facing field label for context.
   textarea: {
-    required: (label: string) =>
-      `Please enter your ${label.toLowerCase()}.`,
+    required: (label: string) => `Please enter your ${label.toLowerCase()}.`,
     tooLong: (max: number) =>
       `Your response is too long — please shorten it to ${max} characters or fewer.`,
     tooShort: (min: number) =>
@@ -103,7 +101,7 @@ export const fieldErrors = {
   consent: {
     required: 'You must agree before submitting.',
   },
-}
+};
 
 // ---------------------------------------------------------------------------
 // Form-level errors
@@ -126,17 +124,18 @@ export const formErrors = {
       "Your submission didn't go through. Check your connection and try again. " +
       'If the problem continues, contact us at [email].',
     // Request timed out
-    timeout: 'This is taking longer than expected. Check your connection and try again.',
+    timeout:
+      'This is taking longer than expected. Check your connection and try again.',
     // reCAPTCHA verification failed
     recaptchaFailed:
       "We weren't able to verify your submission. " +
       'If you are having trouble, contact us at [email].',
     // reCAPTCHA script failed to load
     recaptchaUnavailable:
-      'A required security check couldn\'t load. ' +
+      "A required security check couldn't load. " +
       'Refresh the page and try again. If the problem continues, contact us at [email].',
   },
-}
+};
 
 // ---------------------------------------------------------------------------
 // Form status messages
@@ -153,4 +152,4 @@ export const formStatus = {
 
   // Default success heading — per-form follow-up copy is defined per form
   successHeading: 'Your submission was received.',
-}
+};

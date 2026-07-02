@@ -15,18 +15,18 @@
  * JS bundle to be loaded globally (already handled in apps/site layout).
  */
 
-import type { UseFormRegister, FieldError } from 'react-hook-form'
+import type { FieldError, UseFormRegister } from 'react-hook-form';
 
 interface TextareaFieldProps {
-  name: string
-  label: string
-  hint?: string
-  required?: boolean
+  name: string;
+  label: string;
+  hint?: string;
+  required?: boolean;
   // Optional character limit. When provided, renders a character count
   // indicator below the textarea using the USWDS character-count pattern.
-  maxLength?: number
-  register: ReturnType<UseFormRegister<Record<string, unknown>>>
-  error?: FieldError
+  maxLength?: number;
+  register: ReturnType<UseFormRegister<Record<string, unknown>>>;
+  error?: FieldError;
 }
 
 export default function TextareaField({
@@ -38,9 +38,9 @@ export default function TextareaField({
   register,
   error,
 }: TextareaFieldProps) {
-  const hintId = hint ? `${name}-hint` : undefined
-  const errorId = error ? `${name}-error` : undefined
-  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined
+  const hintId = hint ? `${name}-hint` : undefined;
+  const errorId = error ? `${name}-error` : undefined;
+  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
 
   // When maxLength is set, USWDS expects the textarea to be wrapped in a
   // div with data-character-count pointing to the input's id, and a
@@ -54,7 +54,7 @@ export default function TextareaField({
       maxLength={maxLength}
       {...register}
     />
-  )
+  );
 
   return (
     <div className={`usa-form-group${error ? ' usa-form-group--error' : ''}`}>
@@ -62,7 +62,8 @@ export default function TextareaField({
         {label}
         {required && (
           <abbr title="required" className="usa-hint usa-hint--required">
-            {' '}*
+            {' '}
+            *
           </abbr>
         )}
       </label>
@@ -101,5 +102,5 @@ export default function TextareaField({
         textarea
       )}
     </div>
-  )
+  );
 }

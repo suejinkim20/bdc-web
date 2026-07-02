@@ -23,7 +23,7 @@
  * ticket data internally.
  */
 
-import type { FreshdeskField } from './types'
+import type { FreshdeskField } from './types';
 
 // Maps default_* Freshdesk field types to their top-level ticket property names.
 // These are the only default fields we expect to encounter in customer-facing forms.
@@ -33,15 +33,15 @@ const DEFAULT_FIELD_MAP: Partial<Record<FreshdeskField['type'], string>> = {
   default_company: 'company',
   // default_subject is intentionally omitted — it's set via formType,
   // not from user input, and should never appear in form values.
-}
+};
 
 export interface FreshdeskTicketPayload {
-  email?: string
-  subject: string
-  description?: string
-  company?: string
-  type: string
-  custom_fields: Record<string, unknown>
+  email?: string;
+  subject: string;
+  description?: string;
+  company?: string;
+  type: string;
+  custom_fields: Record<string, unknown>;
 }
 
 /**
@@ -56,7 +56,7 @@ export interface FreshdeskTicketPayload {
 export function buildPayload(
   values: Record<string, unknown>,
   fields: FreshdeskField[],
-  formType: string
+  formType: string,
 ): FreshdeskTicketPayload {
   const payload: FreshdeskTicketPayload = {
     // Subject is always set programmatically from formType.
@@ -65,33 +65,33 @@ export function buildPayload(
     subject: formType,
     type: formType,
     custom_fields: {},
-  }
+  };
 
   for (const field of fields) {
-    const value = values[field.name]
+    const value = values[field.name];
 
     // Skip fields with no value — don't send empty strings or undefined
     // to Freshdesk as that can trigger validation errors on their end.
-    if (value === undefined || value === null || value === '') continue
+    if (value === undefined || value === null || value === '') continue;
 
     // Skip subject — handled above via formType
-    if (field.type === 'default_subject') continue
+    if (field.type === 'default_subject') continue;
 
     if (field.name.startsWith('cf_')) {
       // Custom fields go into the custom_fields object, keyed by their
       // full cf_ name. Freshdesk uses this prefix to identify custom fields
       // and route them to the correct ticket field on their end.
-      payload.custom_fields[field.name] = value
+      payload.custom_fields[field.name] = value;
     } else {
       // Default fields map to top-level ticket properties via DEFAULT_FIELD_MAP.
-      const ticketKey = DEFAULT_FIELD_MAP[field.type]
+      const ticketKey = DEFAULT_FIELD_MAP[field.type];
       if (ticketKey) {
         // TypeScript needs the explicit cast here since we're dynamically
         // setting properties on a typed object.
-        ;(payload as Record<string, unknown>)[ticketKey] = value
+        (payload as Record<string, unknown>)[ticketKey] = value;
       }
     }
   }
 
-  return payload
+  return payload;
 }

@@ -40,7 +40,7 @@ import type {
   FreshdeskField,
   FreshdeskFormResponse,
   FreshdeskSection,
-} from './types'
+} from './types';
 
 // ---------------------------------------------------------------------------
 // Environment
@@ -49,8 +49,8 @@ import type {
 // These are injected at build time via Astro/Vite's env system.
 // In Astro, environment variables are accessed via import.meta.env,
 // not process.env. Variables must be defined in .env at the repo root.
-const FRESHDESK_DOMAIN = import.meta.env.FRESHDESK_DOMAIN
-const FRESHDESK_API_KEY = import.meta.env.FRESHDESK_API_KEY
+const FRESHDESK_DOMAIN = import.meta.env.FRESHDESK_DOMAIN;
+const FRESHDESK_API_KEY = import.meta.env.FRESHDESK_API_KEY;
 
 // ---------------------------------------------------------------------------
 // Auth helper
@@ -64,7 +64,7 @@ const FRESHDESK_API_KEY = import.meta.env.FRESHDESK_API_KEY
  * not a placeholder. See: https://developers.freshdesk.com/api/#authentication
  */
 function getAuthHeader(): string {
-  return `Basic ${btoa(`${FRESHDESK_API_KEY}:X`)}`
+  return `Basic ${btoa(`${FRESHDESK_API_KEY}:X`)}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -83,7 +83,7 @@ function getAuthHeader(): string {
  * via the formType prop and never shown to the user.
  */
 function isVisibleField(field: FreshdeskField): boolean {
-  return field.displayed_to_customers && !field.archived
+  return field.displayed_to_customers && !field.archived;
 }
 
 // ---------------------------------------------------------------------------
@@ -99,9 +99,8 @@ function isVisibleField(field: FreshdeskField): boolean {
  */
 function needsChoices(field: FreshdeskField): boolean {
   return (
-    field.type === 'custom_dropdown' ||
-    field.type === 'default_ticket_type'
-  )
+    field.type === 'custom_dropdown' || field.type === 'default_ticket_type'
+  );
 }
 
 /**
@@ -115,7 +114,7 @@ function needsChoices(field: FreshdeskField): boolean {
  */
 async function fetchFieldChoices(
   formId: string,
-  field: FreshdeskField
+  field: FreshdeskField,
 ): Promise<FreshdeskField> {
   try {
     const response = await fetch(
@@ -125,28 +124,28 @@ async function fetchFieldChoices(
           Authorization: getAuthHeader(),
           'Content-Type': 'application/json',
         },
-      }
-    )
+      },
+    );
 
     if (!response.ok) {
       console.warn(
         `getFormFields: failed to fetch choices for field "${field.name}" ` +
-        `(${field.id}): ${response.status} ${response.statusText}`
-      )
-      return field
+          `(${field.id}): ${response.status} ${response.statusText}`,
+      );
+      return field;
     }
 
-    const enriched = await response.json()
+    const enriched = await response.json();
 
     // Merge choices from the per-field response into the field object.
     // All other field properties come from the original form-level response.
-    return { ...field, choices: enriched.choices ?? [] }
+    return { ...field, choices: enriched.choices ?? [] };
   } catch (err) {
     console.warn(
       `getFormFields: error fetching choices for field "${field.name}":`,
-      err
-    )
-    return field
+      err,
+    );
+    return field;
   }
 }
 
@@ -180,17 +179,17 @@ async function fetchFieldChoices(
  */
 function resolveSections(
   fields: FreshdeskField[],
-  rawSections: Omit<FreshdeskSection, 'fields'>[]
+  rawSections: Omit<FreshdeskSection, 'fields'>[],
 ): FreshdeskField[] {
-  if (!rawSections.length) return fields
+  if (!rawSections.length) return fields;
 
   // Build a lookup map so we can resolve field IDs to objects in O(1)
   const fieldById = new Map<number, FreshdeskField>(
-    fields.map((f) => [f.id, f])
-  )
+    fields.map((f) => [f.id, f]),
+  );
 
   // Group resolved sections by their parent dropdown field ID
-  const sectionsByParentId = new Map<number, FreshdeskSection[]>()
+  const sectionsByParentId = new Map<number, FreshdeskSection[]>();
 
   for (const rawSection of rawSections) {
     // Resolve ticket_field_ids to full field objects.
@@ -198,25 +197,25 @@ function resolveSections(
     // so they're naturally excluded here.
     const resolvedFields = rawSection.ticket_field_ids
       .map((id) => fieldById.get(id))
-      .filter((f): f is FreshdeskField => f !== undefined)
+      .filter((f): f is FreshdeskField => f !== undefined);
 
     const resolvedSection: FreshdeskSection = {
       ...rawSection,
       fields: resolvedFields,
-    }
+    };
 
-    const parentId = rawSection.parent_ticket_field_id
-    const existing = sectionsByParentId.get(parentId) ?? []
-    sectionsByParentId.set(parentId, [...existing, resolvedSection])
+    const parentId = rawSection.parent_ticket_field_id;
+    const existing = sectionsByParentId.get(parentId) ?? [];
+    sectionsByParentId.set(parentId, [...existing, resolvedSection]);
   }
 
   // Attach resolved sections to their parent dropdown fields.
   // Non-dropdown fields and dropdowns with no sections are returned unchanged.
   return fields.map((field) => {
-    const sections = sectionsByParentId.get(field.id)
-    if (!sections) return field
-    return { ...field, sections }
-  })
+    const sections = sectionsByParentId.get(field.id);
+    if (!sections) return field;
+    return { ...field, sections };
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -233,17 +232,17 @@ function resolveSections(
  * Exported so DynamicForm can use it without reimplementing the logic.
  */
 export function getSectionFieldIds(fields: FreshdeskField[]): Set<number> {
-  const ids = new Set<number>()
+  const ids = new Set<number>();
   for (const field of fields) {
     if (field.sections) {
       for (const section of field.sections) {
         for (const sectionField of section.fields) {
-          ids.add(sectionField.id)
+          ids.add(sectionField.id);
         }
       }
     }
   }
-  return ids
+  return ids;
 }
 
 // ---------------------------------------------------------------------------
@@ -260,19 +259,19 @@ export async function getFormFields(formId: string): Promise<FreshdeskField[]> {
         Authorization: getAuthHeader(),
         'Content-Type': 'application/json',
       },
-    }
-  )
+    },
+  );
 
   if (!response.ok) {
     throw new Error(
-      `Freshdesk API error fetching form ${formId}: ${response.status} ${response.statusText}`
-    )
+      `Freshdesk API error fetching form ${formId}: ${response.status} ${response.statusText}`,
+    );
   }
 
-  const form: FreshdeskFormResponse = await response.json()
+  const form: FreshdeskFormResponse = await response.json();
 
   // Step 1 — Filter to visible, non-archived fields only
-  const visibleFields = form.fields.filter(isVisibleField)
+  const visibleFields = form.fields.filter(isVisibleField);
 
   // Step 2 — Fetch choices for dropdown fields in parallel
   // Promise.all preserves field order while fetching concurrently,
@@ -281,20 +280,21 @@ export async function getFormFields(formId: string): Promise<FreshdeskField[]> {
     visibleFields.map((field) =>
       needsChoices(field)
         ? fetchFieldChoices(formId, field)
-        : Promise.resolve(field)
-    )
-  )
+        : Promise.resolve(field),
+    ),
+  );
 
-// Step 3 — Resolve sections onto parent dropdown fields.
-// Sections can come from two places in the Freshdesk API response:
-//   1. Top-level form.sections (when ?include=section puts them there)
-//   2. Already nested on individual fields (observed in real API responses)
-// We collect from both sources to handle either case.
-const topLevelSections = form.sections ?? []
-const fieldLevelSections = enrichedFields
-  .filter((f) => f.sections?.length)
-  .flatMap((f) => f.sections as Omit<FreshdeskSection, 'fields'>[])
+  // Step 3 — Resolve sections onto parent dropdown fields.
+  // Sections can come from two places in the Freshdesk API response:
+  //   1. Top-level form.sections (when ?include=section puts them there)
+  //   2. Already nested on individual fields (observed in real API responses)
+  // We collect from both sources to handle either case.
+  const topLevelSections = form.sections ?? [];
+  const fieldLevelSections = enrichedFields
+    .filter((f) => f.sections?.length)
+    .flatMap((f) => f.sections as Omit<FreshdeskSection, 'fields'>[]);
 
-const rawSections = [...topLevelSections, ...fieldLevelSections]
-const finalFields = resolveSections(enrichedFields, rawSections)
-return finalFields}
+  const rawSections = [...topLevelSections, ...fieldLevelSections];
+  const finalFields = resolveSections(enrichedFields, rawSections);
+  return finalFields;
+}

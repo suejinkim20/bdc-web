@@ -22,20 +22,20 @@
  * for this field type.
  */
 
-import { DatePicker } from '@trussworks/react-uswds'
-import { Controller } from 'react-hook-form'
-import type { Control, FieldError } from 'react-hook-form'
-import { fieldErrors } from '../util/errorMessages'
+import { DatePicker } from '@trussworks/react-uswds';
+import type { Control, FieldError } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
+import { fieldErrors } from '../util/errorMessages';
 
 interface DateFieldProps {
-  name: string
-  label: string
-  hint?: string
-  required?: boolean
+  name: string;
+  label: string;
+  hint?: string;
+  required?: boolean;
   // DateField uses Controller instead of register because Trussworks DatePicker
   // doesn't expose a ref for React Hook Form to attach to directly.
-  control: Control<Record<string, unknown>>
-  error?: FieldError
+  control: Control<Record<string, unknown>>;
+  error?: FieldError;
 }
 
 export default function DateField({
@@ -46,8 +46,8 @@ export default function DateField({
   control,
   error,
 }: DateFieldProps) {
-  const hintId = hint ? `${name}-hint` : undefined
-  const errorId = error ? `${name}-error` : undefined
+  const hintId = hint ? `${name}-hint` : undefined;
+  const errorId = error ? `${name}-error` : undefined;
 
   return (
     <div className={`usa-form-group${error ? ' usa-form-group--error' : ''}`}>
@@ -55,7 +55,8 @@ export default function DateField({
         {label}
         {required && (
           <abbr title="required" className="usa-hint usa-hint--required">
-            {' '}*
+            {' '}
+            *
           </abbr>
         )}
       </label>
@@ -83,10 +84,12 @@ export default function DateField({
             // Trussworks DatePicker returns the selected date as a string
             // in YYYY-MM-DD format via its onChange callback.
             onChange={(val) => field.onChange(val)}
-            aria-describedby={[hintId, errorId].filter(Boolean).join(' ') || undefined}
+            aria-describedby={
+              [hintId, errorId].filter(Boolean).join(' ') || undefined
+            }
           />
         )}
       />
     </div>
-  )
+  );
 }

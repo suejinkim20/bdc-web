@@ -21,10 +21,10 @@
  * That behavior is handled in the Lambda proxy, not here.
  */
 
-import type { UseFormRegister } from 'react-hook-form'
+import type { UseFormRegister } from 'react-hook-form';
 
 interface HoneypotFieldProps {
-  register: ReturnType<UseFormRegister<Record<string, unknown>>>
+  register: ReturnType<UseFormRegister<Record<string, unknown>>>;
 }
 
 // Visually hidden but not display:none — keeps it in the DOM flow
@@ -35,7 +35,7 @@ const hiddenStyle: React.CSSProperties = {
   width: '1px',
   height: '1px',
   overflow: 'hidden',
-}
+};
 
 export default function HoneypotField({ register }: HoneypotFieldProps) {
   return (
@@ -49,5 +49,5 @@ export default function HoneypotField({ register }: HoneypotFieldProps) {
         {...register}
       />
     </div>
-  )
+  );
 }

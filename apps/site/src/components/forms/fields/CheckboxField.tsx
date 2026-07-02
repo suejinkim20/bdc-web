@@ -22,26 +22,26 @@
  * Trussworks only when a component requires complex JS behavior.
  */
 
-import type { UseFormRegister, FieldError } from 'react-hook-form'
+import type { FieldError, UseFormRegister } from 'react-hook-form';
 
 interface CheckboxFieldProps {
   // The Freshdesk field name (e.g. "cf_agree_to_terms").
   // Used as the HTML input name and React Hook Form registration key.
-  name: string
+  name: string;
   // The customer-facing label from label_for_customers.
   // Rendered as the checkbox label, not as a separate field label above it —
   // USWDS checkbox pattern places the label inline with the input.
-  label: string
+  label: string;
   // Optional hint text from hint_for_customers.
   // Rendered above the checkbox group wrapper per USWDS checkbox pattern.
-  hint?: string
+  hint?: string;
   // Whether the field is required — derived from required_for_customers.
   // A required checkbox means the user must check it to submit.
-  required?: boolean
+  required?: boolean;
   // React Hook Form's register function, bound to this field by the parent.
-  register: ReturnType<UseFormRegister<Record<string, unknown>>>
+  register: ReturnType<UseFormRegister<Record<string, unknown>>>;
   // The React Hook Form error for this field, if any.
-  error?: FieldError
+  error?: FieldError;
 }
 
 export default function CheckboxField({
@@ -52,8 +52,8 @@ export default function CheckboxField({
   register,
   error,
 }: CheckboxFieldProps) {
-  const hintId = hint ? `${name}-hint` : undefined
-  const errorId = error ? `${name}-error` : undefined
+  const hintId = hint ? `${name}-hint` : undefined;
+  const errorId = error ? `${name}-error` : undefined;
 
   return (
     <div className={`usa-form-group${error ? ' usa-form-group--error' : ''}`}>
@@ -77,18 +77,21 @@ export default function CheckboxField({
           className="usa-checkbox__input"
           type="checkbox"
           aria-required={required}
-          aria-describedby={[hintId, errorId].filter(Boolean).join(' ') || undefined}
+          aria-describedby={
+            [hintId, errorId].filter(Boolean).join(' ') || undefined
+          }
           {...register}
         />
         <label className="usa-checkbox__label" htmlFor={name}>
           {label}
           {required && (
             <abbr title="required" className="usa-hint usa-hint--required">
-              {' '}*
+              {' '}
+              *
             </abbr>
           )}
         </label>
       </div>
     </div>
-  )
+  );
 }

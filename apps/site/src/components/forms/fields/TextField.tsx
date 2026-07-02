@@ -27,33 +27,33 @@
  * so the parent DynamicForm controls all form state.
  */
 
-import type { UseFormRegister, FieldError } from 'react-hook-form'
+import type { FieldError, UseFormRegister } from 'react-hook-form';
 
 // The full set of input types this component supports.
 // 'decimal' is a semantic alias for type="number" with step="any" —
 // it's not a native HTML input type but used internally to distinguish
 // custom_decimal from custom_number in the step attribute logic below.
-type TextFieldInputType = 'text' | 'email' | 'number' | 'decimal' | 'url'
+type TextFieldInputType = 'text' | 'email' | 'number' | 'decimal' | 'url';
 
 interface TextFieldProps {
   // The Freshdesk field name (e.g. "requester", "cf_journal_name").
   // Used as the HTML input name and React Hook Form registration key.
-  name: string
+  name: string;
   // The customer-facing label from label_for_customers.
-  label: string
+  label: string;
   // Optional hint text from hint_for_customers.
   // Rendered between the label and the input per USWDS and UX spec.
-  hint?: string
+  hint?: string;
   // Whether the field is required — derived from required_for_customers.
-  required?: boolean
+  required?: boolean;
   // Input type — defaults to "text".
   // Pass "email" for default_requester, "number" for custom_number,
   // "decimal" for custom_decimal, "url" for custom_url.
-  inputType?: TextFieldInputType
+  inputType?: TextFieldInputType;
   // React Hook Form's register function, bound to this field by the parent.
-  register: ReturnType<UseFormRegister<Record<string, unknown>>>
+  register: ReturnType<UseFormRegister<Record<string, unknown>>>;
   // The React Hook Form error for this field, if any.
-  error?: FieldError
+  error?: FieldError;
 }
 
 export default function TextField({
@@ -65,18 +65,19 @@ export default function TextField({
   register,
   error,
 }: TextFieldProps) {
-  const hintId = hint ? `${name}-hint` : undefined
-  const errorId = error ? `${name}-error` : undefined
+  const hintId = hint ? `${name}-hint` : undefined;
+  const errorId = error ? `${name}-error` : undefined;
 
   // aria-describedby wires the input to both hint and error text for screen readers.
   // Both may be present simultaneously — hint is always shown, error only on failure.
-  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined
+  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
 
   // 'decimal' is an internal alias — the HTML input type is always 'number'.
   // We use it to set step="any", which allows decimal values.
   // custom_number uses step="1" (integers only) by default.
-  const htmlType = inputType === 'decimal' ? 'number' : inputType
-  const step = inputType === 'decimal' ? 'any' : inputType === 'number' ? '1' : undefined
+  const htmlType = inputType === 'decimal' ? 'number' : inputType;
+  const step =
+    inputType === 'decimal' ? 'any' : inputType === 'number' ? '1' : undefined;
 
   return (
     <div className={`usa-form-group${error ? ' usa-form-group--error' : ''}`}>
@@ -84,7 +85,8 @@ export default function TextField({
         {label}
         {required && (
           <abbr title="required" className="usa-hint usa-hint--required">
-            {' '}*
+            {' '}
+            *
           </abbr>
         )}
       </label>
@@ -111,5 +113,5 @@ export default function TextField({
         {...register}
       />
     </div>
-  )
+  );
 }

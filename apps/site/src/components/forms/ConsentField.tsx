@@ -24,15 +24,15 @@
  *   be confirmed with the content lead and legal/policy reviewer before launch.
  */
 
-import type { UseFormRegister, FieldError } from 'react-hook-form'
+import type { FieldError, UseFormRegister } from 'react-hook-form';
 
 // The field name used to register this input with React Hook Form.
 // Must be consistent with any filtering logic in buildPayload.
-export const CONSENT_FIELD_NAME = 'consent'
+export const CONSENT_FIELD_NAME = 'consent';
 
 interface ConsentFieldProps {
-  register: ReturnType<UseFormRegister<Record<string, unknown>>>
-  error?: FieldError
+  register: ReturnType<UseFormRegister<Record<string, unknown>>>;
+  error?: FieldError;
 }
 
 export default function ConsentField({ register, error }: ConsentFieldProps) {
@@ -60,5 +60,5 @@ export default function ConsentField({ register, error }: ConsentFieldProps) {
         </label>
       </div>
     </div>
-  )
+  );
 }

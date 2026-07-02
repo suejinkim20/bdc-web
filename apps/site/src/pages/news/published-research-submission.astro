@@ -15,8 +15,8 @@
  *   FRESHDESK_PROXY_URL               — Lambda proxy endpoint for ticket submission
  */
 
-import Base from '@layouts/Base.astro';
 import DynamicForm from '@components/forms/DynamicForm.tsx';
+import Base from '@layouts/Base.astro';
 import { getFormFields } from '../../util/freshdesk/getFormFields';
 import type { FreshdeskField } from '../../util/freshdesk/types';
 
@@ -24,7 +24,9 @@ let fields: FreshdeskField[] = [];
 let formError = false;
 
 try {
-  fields = await getFormFields(import.meta.env.FRESHDESK_FORM_PUBLISHED_RESEARCH);
+  fields = await getFormFields(
+    import.meta.env.FRESHDESK_FORM_PUBLISHED_RESEARCH,
+  );
 } catch (e) {
   // Log at build time so the error is visible in CI/build output.
   // DynamicForm will render the fallback UI for users.

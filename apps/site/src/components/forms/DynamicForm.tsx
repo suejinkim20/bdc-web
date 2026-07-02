@@ -29,43 +29,43 @@
  *   error={true}. This component renders a fallback message instead of the form.
  */
 
-import { useRef, useState, useCallback } from 'react'
-import { useForm } from 'react-hook-form'
-import type { FieldError } from 'react-hook-form'
-import type { FreshdeskField } from '../../util/freshdesk/types'
-import { buildPayload } from '../../util/freshdesk/buildPayload'
-import { getSectionFieldIds } from '../../util/freshdesk/getFormFields'
-import { getRecaptchaToken } from '../../util/recaptcha'
-import { renderField } from './helpers/renderField'
-import HoneypotField from './HoneypotField'
-import ConsentField, { CONSENT_FIELD_NAME } from './ConsentField'
-import { fieldErrors, formErrors, formStatus } from './util/errorMessages'
+import { useCallback, useRef, useState } from 'react';
+import type { FieldError } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { buildPayload } from '../../util/freshdesk/buildPayload';
+import { getSectionFieldIds } from '../../util/freshdesk/getFormFields';
+import type { FreshdeskField } from '../../util/freshdesk/types';
+import { getRecaptchaToken } from '../../util/recaptcha';
+import ConsentField, { CONSENT_FIELD_NAME } from './ConsentField';
+import HoneypotField from './HoneypotField';
+import { renderField } from './helpers/renderField';
+import { fieldErrors, formErrors, formStatus } from './util/errorMessages';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
+type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 interface DynamicFormProps {
   // Filtered, enriched field config from getFormFields — only fields where
   // displayed_to_customers is true and archived is false. Dropdown fields
   // include choices and sections populated at build time.
-  fields: FreshdeskField[]
+  fields: FreshdeskField[];
   // The Freshdesk ticket type string for this form
   // (e.g. "Published Research Submission").
   // Used as both ticket `type` and ticket `subject` in buildPayload.
-  formType: string
+  formType: string;
   // The URL of the Lambda proxy endpoint.
   // Provided by the Astro page so it can vary per environment.
   // Set via FRESHDESK_PROXY_URL in apps/site/.env.
-  submitUrl: string
+  submitUrl: string;
   // The reCAPTCHA v3 site key for the current environment.
   // Passed from the Astro page via import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY.
   // Used to obtain a token before submission — the Lambda verifies it.
-  recaptchaSiteKey: string
+  recaptchaSiteKey: string;
   // True if getFormFields threw at build time — renders fallback UI.
-  error?: boolean
+  error?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -79,15 +79,17 @@ export default function DynamicForm({
   recaptchaSiteKey,
   error = false,
 }: DynamicFormProps) {
-  const [status, setStatus] = useState<FormStatus>('idle')
-  const [submitError, setSubmitError] = useState<string | null>(null)
-  const errorSummaryRef = useRef<HTMLDivElement>(null)
-  const confirmationRef = useRef<HTMLDivElement>(null)
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const errorSummaryRef = useRef<HTMLDivElement>(null);
+  const confirmationRef = useRef<HTMLDivElement>(null);
 
   // Tracks the currently selected value for each dropdown that has sections.
   // Keyed by field name, value is the selected choice value string.
   // Updated by onSectionChange when the user selects a dropdown option.
-  const [sectionSelections, setSectionSelections] = useState<Record<string, string>>({})
+  const [sectionSelections, setSectionSelections] = useState<
+    Record<string, string>
+  >({});
 
   const {
     register,
@@ -97,22 +99,22 @@ export default function DynamicForm({
     unregister,
     formState: { errors },
   } = useForm<Record<string, unknown>>({
-    mode: 'onSubmit',       // Validate on submit, not while typing
+    mode: 'onSubmit', // Validate on submit, not while typing
     reValidateMode: 'onChange', // Clear errors in real time as user fixes them
-  })
+  });
 
   // Called by SelectField (via renderField) when a section-controlling
   // dropdown changes. Updates sectionSelections which triggers a re-render,
   // showing or hiding the appropriate section fields.
   // useCallback prevents unnecessary re-renders of child components.
   const onSectionChange = useCallback((fieldName: string, value: string) => {
-    setSectionSelections((prev) => ({ ...prev, [fieldName]: value }))
-  }, [])
+    setSectionSelections((prev) => ({ ...prev, [fieldName]: value }));
+  }, []);
 
   // IDs of fields that belong to dynamic sections.
   // These are skipped during top-level rendering — they only appear
   // inline below their parent dropdown when their section is triggered.
-  const sectionFieldIds = getSectionFieldIds(fields)
+  const sectionFieldIds = getSectionFieldIds(fields);
 
   // ---------------------------------------------------------------------------
   // Fallback — shown when getFormFields failed at build time
@@ -122,11 +124,13 @@ export default function DynamicForm({
     return (
       <div className="usa-alert usa-alert--error" role="alert">
         <div className="usa-alert__body">
-          <h3 className="usa-alert__heading">{formStatus.unavailableHeading}</h3>
+          <h3 className="usa-alert__heading">
+            {formStatus.unavailableHeading}
+          </h3>
           <p className="usa-alert__text">{formStatus.unavailable}</p>
         </div>
       </div>
-    )
+    );
   }
 
   // ---------------------------------------------------------------------------
@@ -138,15 +142,16 @@ export default function DynamicForm({
       // tabIndex={-1} allows focus to be programmatically moved here
       // after submission, per the UX spec accessibility requirement.
       <div ref={confirmationRef} tabIndex={-1}>
-        <div className="usa-alert usa-alert--success" role="status">
+        <output className="usa-alert usa-alert--success">
           <div className="usa-alert__body">
             <h2 className="usa-alert__heading">{formStatus.successHeading}</h2>
             <p className="usa-alert__text">
               {/* TODO: Per-form follow-up copy — confirm with content team */}
-              Check your inbox for a confirmation email with a copy of your submission.
+              Check your inbox for a confirmation email with a copy of your
+              submission.
             </p>
           </div>
-        </div>
+        </output>
 
         <div className="margin-top-3">
           {/* TODO: Per-form button labels and destinations — confirm with content team */}
@@ -154,9 +159,9 @@ export default function DynamicForm({
             type="button"
             className="usa-button usa-button--outline margin-right-2"
             onClick={() => {
-              reset()
-              setSectionSelections({})
-              setStatus('idle')
+              reset();
+              setSectionSelections({});
+              setStatus('idle');
             }}
           >
             Submit another
@@ -166,7 +171,7 @@ export default function DynamicForm({
           </a>
         </div>
       </div>
-    )
+    );
   }
 
   // ---------------------------------------------------------------------------
@@ -174,51 +179,51 @@ export default function DynamicForm({
   // ---------------------------------------------------------------------------
 
   const onSubmit = async (values: Record<string, unknown>) => {
-    setStatus('submitting')
-    setSubmitError(null)
+    setStatus('submitting');
+    setSubmitError(null);
 
     try {
       // Get reCAPTCHA token before building payload.
       // The Lambda proxy verifies this token with Google before forwarding
       // the ticket to Freshdesk. See services/freshdesk/handler.py.
-      const recaptchaToken = await getRecaptchaToken(recaptchaSiteKey)
+      const recaptchaToken = await getRecaptchaToken(recaptchaSiteKey);
 
       const payload = {
         ...buildPayload(values, fields, formType),
         recaptcha_token: recaptchaToken,
-      }
+      };
 
       const response = await fetch(submitUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error(`Submit failed: ${response.status}`)
+        throw new Error(`Submit failed: ${response.status}`);
       }
 
-      setStatus('success')
+      setStatus('success');
 
       // Move focus to confirmation message per UX spec accessibility requirement.
       // setTimeout defers until after React re-renders the success state.
-      setTimeout(() => confirmationRef.current?.focus(), 0)
+      setTimeout(() => confirmationRef.current?.focus(), 0);
     } catch {
-      setStatus('error')
-      setSubmitError(formErrors.submission.general)
+      setStatus('error');
+      setSubmitError(formErrors.submission.general);
     }
-  }
+  };
 
   const onError = () => {
     // Validation failed — move focus to error summary per UX spec.
-    setTimeout(() => errorSummaryRef.current?.focus(), 0)
-  }
+    setTimeout(() => errorSummaryRef.current?.focus(), 0);
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  const errorFields = Object.keys(errors)
+  const errorFields = Object.keys(errors);
 
   return (
     <form
@@ -228,7 +233,10 @@ export default function DynamicForm({
     >
       {/* Submission error banner — shown when the Lambda POST fails */}
       {status === 'error' && submitError && (
-        <div className="usa-alert usa-alert--error margin-bottom-3" role="alert">
+        <div
+          className="usa-alert usa-alert--error margin-bottom-3"
+          role="alert"
+        >
           <div className="usa-alert__body">
             <p className="usa-alert__text">{submitError}</p>
           </div>
@@ -283,8 +291,8 @@ export default function DynamicForm({
             errors,
             unregister,
             sectionSelections,
-            onSectionChange
-          )
+            onSectionChange,
+          ),
         )}
 
       {/* Hardcoded fields — not derived from Freshdesk config */}
@@ -308,5 +316,5 @@ export default function DynamicForm({
         {status === 'submitting' ? 'Submitting…' : 'Submit'}
       </button>
     </form>
-  )
+  );
 }

@@ -1,1 +1,1 @@
-export * from './getRecaptchaToken'
+export * from './getRecaptchaToken';

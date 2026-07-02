@@ -38,26 +38,34 @@
  *   4. Update getFormFields if the type requires choices or section data
  */
 
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import type { FieldError, UseFormUnregister } from 'react-hook-form'
-import type { FreshdeskField, FreshdeskSection } from '../../../util/freshdesk/types'
-import TextField from '../fields/TextField'
-import TextareaField from '../fields/TextareaField'
-import DateField from '../fields/DateField'
-import SelectField from '../fields/SelectField'
-import CheckboxField from '../fields/CheckboxField'
-import { fieldErrors } from '../util/errorMessages'
+import { useEffect } from 'react';
+import type { FieldError, UseFormUnregister, useForm } from 'react-hook-form';
+import type {
+  FreshdeskField,
+  FreshdeskSection,
+} from '../../../util/freshdesk/types';
+import CheckboxField from '../fields/CheckboxField';
+import DateField from '../fields/DateField';
+import SelectField from '../fields/SelectField';
+import TextareaField from '../fields/TextareaField';
+import TextField from '../fields/TextField';
+import { fieldErrors } from '../util/errorMessages';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
 // RHF types inferred from useForm to stay in sync with DynamicForm
-type RHFRegister = ReturnType<typeof useForm<Record<string, unknown>>>['register']
-type RHFControl = ReturnType<typeof useForm<Record<string, unknown>>>['control']
-type RHFErrors = ReturnType<typeof useForm<Record<string, unknown>>>['formState']['errors']
-type RHFUnregister = UseFormUnregister<Record<string, unknown>>
+type RHFRegister = ReturnType<
+  typeof useForm<Record<string, unknown>>
+>['register'];
+type RHFControl = ReturnType<
+  typeof useForm<Record<string, unknown>>
+>['control'];
+type RHFErrors = ReturnType<
+  typeof useForm<Record<string, unknown>>
+>['formState']['errors'];
+type RHFUnregister = UseFormUnregister<Record<string, unknown>>;
 
 // ---------------------------------------------------------------------------
 // SectionFields component
@@ -77,14 +85,14 @@ type RHFUnregister = UseFormUnregister<Record<string, unknown>>
  *   Class name: 'dynamic-section-fields' — add styles there.
  */
 interface SectionFieldsProps {
-  section: FreshdeskSection
-  isVisible: boolean
-  register: RHFRegister
-  control: RHFControl
-  errors: RHFErrors
-  unregister: RHFUnregister
-  sectionSelections: Record<string, string>
-  onSectionChange: (fieldName: string, value: string) => void
+  section: FreshdeskSection;
+  isVisible: boolean;
+  register: RHFRegister;
+  control: RHFControl;
+  errors: RHFErrors;
+  unregister: RHFUnregister;
+  sectionSelections: Record<string, string>;
+  onSectionChange: (fieldName: string, value: string) => void;
 }
 
 function SectionFields({
@@ -102,14 +110,17 @@ function SectionFields({
   // if the user switches choices and then reselects this section later.
   useEffect(() => {
     if (!isVisible) {
-      const fieldNames = section.fields.map((f) => f.name) as [string, ...string[]]
+      const fieldNames = section.fields.map((f) => f.name) as [
+        string,
+        ...string[],
+      ];
       if (fieldNames.length > 0) {
-        unregister(fieldNames, { keepValue: false })
+        unregister(fieldNames, { keepValue: false });
       }
     }
-  }, [isVisible, section.fields, unregister])
+  }, [isVisible, section.fields, unregister]);
 
-  if (!isVisible) return null
+  if (!isVisible) return null;
 
   return (
     // The 'dynamic-section-fields' class is the animation hook.
@@ -137,11 +148,11 @@ function SectionFields({
           errors,
           unregister,
           sectionSelections,
-          onSectionChange
-        )
+          onSectionChange,
+        ),
       )}
     </div>
-  )
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -162,7 +173,7 @@ export function renderField(
   // Callback fired when a section-controlling dropdown changes value.
   // DynamicForm updates sectionSelections in response, triggering a re-render
   // that shows/hides the appropriate section fields.
-  onSectionChange: (fieldName: string, value: string) => void
+  onSectionChange: (fieldName: string, value: string) => void,
 ) {
   // Props shared across all field components.
   // label_for_customers is always used over label — it's the customer-facing
@@ -176,7 +187,7 @@ export function renderField(
     // that includes nested object fields — our flat fields always produce
     // plain FieldError objects, so the cast is safe here.
     error: errors[field.name] as FieldError | undefined,
-  }
+  };
 
   switch (field.type) {
     case 'default_requester':
@@ -193,13 +204,13 @@ export function renderField(
             },
           })}
         />
-      )
+      );
 
     case 'default_subject':
       // Subject is always set programmatically via formType in buildPayload.
       // It should never be rendered as a visible field, even if
       // displayed_to_customers is true in Freshdesk.
-      return null
+      return null;
 
     case 'custom_text':
     case 'default_company':
@@ -213,7 +224,7 @@ export function renderField(
               : false,
           })}
         />
-      )
+      );
 
     case 'custom_paragraph':
     case 'default_description':
@@ -227,7 +238,7 @@ export function renderField(
               : false,
           })}
         />
-      )
+      );
 
     case 'custom_dropdown':
     case 'default_ticket_type': {
@@ -237,13 +248,13 @@ export function renderField(
       if (!field.choices?.length) {
         console.warn(
           `renderField: dropdown field "${field.name}" has no choices — ` +
-          `was getFormFields enriched correctly?`
-        )
+            `was getFormFields enriched correctly?`,
+        );
       }
 
       // The currently selected value for this dropdown.
       // Used to determine which sections (if any) should be visible.
-      const selectedValue = sectionSelections[field.name] ?? ''
+      const selectedValue = sectionSelections[field.name] ?? '';
 
       return (
         <div key={field.name}>
@@ -273,11 +284,11 @@ export function renderField(
           {field.sections?.map((section) => {
             // Find the choice object whose value matches the current selection
             const matchingChoice = field.choices?.find(
-              (c) => c.value === selectedValue
-            )
+              (c) => c.value === selectedValue,
+            );
             const isVisible = matchingChoice
               ? section.choice_ids.includes(matchingChoice.id)
-              : false
+              : false;
 
             return (
               <SectionFields
@@ -291,10 +302,10 @@ export function renderField(
                 sectionSelections={sectionSelections}
                 onSectionChange={onSectionChange}
               />
-            )
+            );
           })}
         </div>
-      )
+      );
     }
 
     case 'custom_checkbox':
@@ -308,7 +319,7 @@ export function renderField(
               : false,
           })}
         />
-      )
+      );
 
     case 'custom_number':
       return (
@@ -326,7 +337,7 @@ export function renderField(
             },
           })}
         />
-      )
+      );
 
     case 'custom_decimal':
       return (
@@ -344,7 +355,7 @@ export function renderField(
             },
           })}
         />
-      )
+      );
 
     case 'custom_url':
       return (
@@ -362,16 +373,10 @@ export function renderField(
             },
           })}
         />
-      )
+      );
 
     case 'custom_date':
-      return (
-        <DateField
-          key={field.name}
-          {...commonProps}
-          control={control}
-        />
-      )
+      return <DateField key={field.name} {...commonProps} control={control} />;
 
     default:
       // Log unhandled field types in development so they're immediately visible
@@ -380,8 +385,8 @@ export function renderField(
       // and add a case above.
       console.warn(
         `renderField: unhandled field type "${(field as FreshdeskField).type}" ` +
-        `for field "${field.name}"`
-      )
-      return null
+          `for field "${field.name}"`,
+      );
+      return null;
   }
 }

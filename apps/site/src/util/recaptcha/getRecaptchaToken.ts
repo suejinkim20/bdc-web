@@ -38,26 +38,29 @@
 declare global {
   interface Window {
     grecaptcha: {
-      execute: (siteKey: string, options: { action: string }) => Promise<string>
-      ready: (callback: () => void) => void
-    }
+      execute: (
+        siteKey: string,
+        options: { action: string },
+      ) => Promise<string>;
+      ready: (callback: () => void) => void;
+    };
   }
 }
 
 export function getRecaptchaToken(
   siteKey: string,
-  action: string = 'submit'
+  action: string = 'submit',
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     // grecaptcha.ready defers execution until the reCAPTCHA script has fully
     // loaded and initialized. Calling execute() before ready() can fail silently.
     window.grecaptcha.ready(async () => {
       try {
-        const token = await window.grecaptcha.execute(siteKey, { action })
-        resolve(token)
+        const token = await window.grecaptcha.execute(siteKey, { action });
+        resolve(token);
       } catch (err) {
-        reject(err)
+        reject(err);
       }
-    })
-  })
+    });
+  });
 }
