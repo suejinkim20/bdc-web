@@ -1,8 +1,9 @@
 ---
-import '../styles/global.scss';
 import { ClientRouter } from 'astro:transitions';
+import SiteAlertList from '@components/layout/SiteAlertList.astro';
 import SiteFooter from '@components/layout/SiteFooter.astro';
 import { SiteHeader } from '@components/layout/SiteHeader';
+import '../styles/global.scss';
 
 interface Props {
   title: string;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const { title, enableRecaptcha = false } = Astro.props;
+const isHomePage = Astro.url.pathname === '/';
 const displayTitle = title.includes('BioData Catalyst')
   ? title
   : `${title} | BioData Catalyst`;
@@ -46,6 +48,7 @@ const displayTitle = title.includes('BioData Catalyst')
   </head>
   <body data-pagefind-ignore>
     <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+    <SiteAlertList isHomePage={isHomePage} />
     <SiteHeader client:only="react" transition:persist />
     <main id="main-content" data-pagefind-body>
       <slot />
