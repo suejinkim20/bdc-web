@@ -39,3 +39,22 @@ h4 {
   font-size: 1.5rem;
   margin-bottom: 0
 }
+
+.usa-form--large {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: #f9f9f9; // replace #b5bdbc with whatever feels right
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+}
+
+.usa-fieldset {
+  margin-top: 1.5rem;
+}
+
+.usa-checkbox {
+  background-color: transparent;
+}

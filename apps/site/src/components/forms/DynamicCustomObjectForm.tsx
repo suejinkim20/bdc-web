@@ -1,44 +1,45 @@
 /**
- * DynamicForm
+ * DynamicCustomObjectForm
  *
- * A React island that renders a Freshdesk-backed form dynamically from
- * field configuration fetched at build time by the Astro page.
+ * A React island that renders a Freshdesk custom object form dynamically
+ * from field configuration fetched at build time by the Astro page.
  *
- * Why a React island?
- *   Forms require client-side interactivity — validation state, submission
- *   handling, field error display, success/loading/error UI transitions.
- *   The field *config* is static (fetched at build time and passed as props),
- *   but the form *behavior* must run in the browser.
+ * Parallel to DynamicForm.tsx but for custom object schemas rather than
+ * ticket forms. Key differences:
+ *
+ *   - Accepts CustomObjectField[] instead of FreshdeskField[]
+ *   - Uses renderCustomObjectField instead of renderField
+ *   - Uses buildCustomObjectPayload instead of buildPayload
+ *   - No formType — custom object records don't have a ticket type string
+ *   - No dynamic sections — custom objects don't support them natively
+ *   - schemaId identifies which custom object schema to post records to
+ *   - idPrefix customizes the generated submission ID per form type
  *
  * Data flow:
- *   1. Astro page fetches field config from Freshdesk API at build time
- *   2. Filtered fields array is passed as props to this component
- *   3. renderField maps each field type to the appropriate USWDS component
- *   4. On submit, buildPayload transforms RHF values into a Freshdesk ticket shape
- *   5. Payload (including reCAPTCHA token) is POSTed to the Lambda proxy,
- *      which verifies reCAPTCHA and forwards the ticket to Freshdesk
- *
- * Dynamic sections:
- *   Dropdown fields with dynamic sections track their selected value in
- *   sectionSelections state. renderField uses this to show/hide section
- *   fields inline below the dropdown. Hidden section fields are unregistered
- *   from RHF so their values are excluded from the payload.
+ *   1. Astro page fetches schema fields via getCustomObjectSchema at build time
+ *   2. Astro page fetches reference data via getReferenceDataValues at build time
+ *   3. Reference data options are merged into relevant field configs
+ *   4. Enriched fields array is passed as props to this component
+ *   5. renderCustomObjectField maps field types to USWDS components
+ *   6. On submit, buildCustomObjectPayload builds the record payload
+ *   7. Payload (including reCAPTCHA token) is POSTed to the Lambda proxy,
+ *      which forwards to POST /api/v2/custom_objects/schemas/{id}/records/
  *
  * Error fallback:
- *   If getFormFields throws at build time, the Astro page catches it and passes
- *   error={true}. This component renders a fallback message instead of the form.
+ *   If getCustomObjectSchema throws at build time, the Astro page catches it
+ *   and passes error={true}. This component renders a fallback message instead
+ *   of the form.
  */
 
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type { FieldError } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { buildPayload } from '../../util/freshdesk/buildPayload';
-import { getSectionFieldIds } from '../../util/freshdesk/getFormFields';
-import type { FreshdeskField } from '../../util/freshdesk/types';
+import { buildCustomObjectPayload } from '../../util/freshdesk/buildCustomObjectPayload';
+import type { CustomObjectField } from '../../util/freshdesk/typesCustomObjects';
 import { getRecaptchaToken } from '../../util/recaptcha';
 import ConsentField, { CONSENT_FIELD_NAME } from './ConsentField';
 import HoneypotField from './HoneypotField';
-import { renderField } from './helpers/renderField';
+import { renderCustomObjectField } from './helpers/renderCustomObjectField';
 import { fieldErrors, formErrors, formStatus } from './util/errorMessages';
 
 // ---------------------------------------------------------------------------
@@ -47,24 +48,25 @@ import { fieldErrors, formErrors, formStatus } from './util/errorMessages';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-interface DynamicFormProps {
-  // Filtered, enriched field config from getFormFields — only fields where
-  // displayed_to_customers is true and archived is false. Dropdown fields
-  // include choices and sections populated at build time.
-  fields: FreshdeskField[];
-  // The Freshdesk ticket type string for this form
-  // (e.g. "Published Research Submission").
-  // Used as both ticket `type` and ticket `subject` in buildPayload.
-  formType: string;
+interface DynamicCustomObjectFormProps {
+  // Filtered, enriched field config from getCustomObjectSchema.
+  // PRIMARY and hidden fields are excluded. Reference data fields
+  // have options populated from getReferenceDataValues.
+  fields: CustomObjectField[];
+  // The numeric ID of the custom object schema.
+  // Passed to the Lambda proxy so it can construct the correct endpoint:
+  // POST /api/v2/custom_objects/schemas/{schemaId}/records/
+  schemaId: number;
+  // Prefix for the generated submission ID (e.g. 'PUB', 'CC', 'JOIN').
+  // Defaults to 'SUB' if not provided.
+  idPrefix?: string;
   // The URL of the Lambda proxy endpoint.
-  // Provided by the Astro page so it can vary per environment.
   // Set via FRESHDESK_PROXY_URL in apps/site/.env.
   submitUrl: string;
   // The reCAPTCHA v3 site key for the current environment.
   // Passed from the Astro page via import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY.
-  // Used to obtain a token before submission — the Lambda verifies it.
   recaptchaSiteKey: string;
-  // True if getFormFields threw at build time — renders fallback UI.
+  // True if getCustomObjectSchema threw at build time — renders fallback UI.
   error?: boolean;
 }
 
@@ -72,57 +74,37 @@ interface DynamicFormProps {
 // Component
 // ---------------------------------------------------------------------------
 
-export default function DynamicForm({
+export default function DynamicCustomObjectForm({
   fields,
-  formType,
+  schemaId,
+  idPrefix = 'SUB',
   submitUrl,
   recaptchaSiteKey,
   error = false,
-}: DynamicFormProps) {
+}: DynamicCustomObjectFormProps) {
   const [status, setStatus] = useState<FormStatus>('idle');
   const [submitError, setSubmitError] = useState<string | null>(null);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
   const confirmationRef = useRef<HTMLDivElement>(null);
-
-  // Tracks the currently selected value for each dropdown that has sections.
-  // Keyed by field name, value is the selected choice value string.
-  // Updated by onSectionChange when the user selects a dropdown option.
-  const [sectionSelections, setSectionSelections] = useState<
-    Record<string, string>
-  >({});
 
   const {
     register,
     control,
     handleSubmit,
     reset,
-    unregister,
     formState: { errors },
   } = useForm<Record<string, unknown>>({
     mode: 'onSubmit', // Validate on submit, not while typing
     reValidateMode: 'onChange', // Clear errors in real time as user fixes them
   });
 
-  // Called by SelectField (via renderField) when a section-controlling
-  // dropdown changes. Updates sectionSelections which triggers a re-render,
-  // showing or hiding the appropriate section fields.
-  // useCallback prevents unnecessary re-renders of child components.
-  const onSectionChange = useCallback((fieldName: string, value: string) => {
-    setSectionSelections((prev) => ({ ...prev, [fieldName]: value }));
-  }, []);
-
-  // IDs of fields that belong to dynamic sections.
-  // These are skipped during top-level rendering — they only appear
-  // inline below their parent dropdown when their section is triggered.
-  const sectionFieldIds = getSectionFieldIds(fields);
-
   // ---------------------------------------------------------------------------
-  // Fallback — shown when getFormFields failed at build time
+  // Fallback — shown when getCustomObjectSchema failed at build time
   // ---------------------------------------------------------------------------
 
   if (error) {
     return (
-      <div className="usa-alert usa-alert--error custom-form">
+      <div className="usa-alert usa-alert--error" role="alert">
         <div className="usa-alert__body">
           <h3 className="usa-alert__heading">
             {formStatus.unavailableHeading}
@@ -146,13 +128,9 @@ export default function DynamicForm({
           <div className="usa-alert__body">
             <h2 className="usa-alert__heading">{formStatus.successHeading}</h2>
             <p className="usa-alert__text">
-              Thank you for submitting your publication to BDC. Your submission
-              has been received and forwarded to the appropriate BDC team for
-              review. If additional information is needed, we may contact you
-              using the email address you provided. Additionally, a copy of your
-              responses has been sent to you at the email address provided. Note
-              that submission does not guarantee inclusion on the BDC-Enabled
-              Research page.
+              {/* TODO: Per-form follow-up copy — confirm with content team */}
+              Check your inbox for a confirmation email with a copy of your
+              submission.
             </p>
           </div>
         </output>
@@ -164,7 +142,6 @@ export default function DynamicForm({
             className="usa-button usa-button--outline margin-right-2"
             onClick={() => {
               reset();
-              setSectionSelections({});
               setStatus('idle');
             }}
           >
@@ -189,12 +166,15 @@ export default function DynamicForm({
     try {
       // Get reCAPTCHA token before building payload.
       // The Lambda proxy verifies this token with Google before forwarding
-      // the ticket to Freshdesk. See services/freshdesk/handler.py.
+      // the record to Freshdesk. See services/freshdesk/handler.py.
       const recaptchaToken = await getRecaptchaToken(recaptchaSiteKey);
 
       const payload = {
-        ...buildPayload(values, fields, formType),
+        ...buildCustomObjectPayload(values, fields, 'name', idPrefix),
         recaptcha_token: recaptchaToken,
+        // Pass schemaId so the Lambda knows which endpoint to hit.
+        // The Lambda constructs: POST /api/v2/custom_objects/schemas/{schemaId}/records/
+        schema_id: schemaId,
       };
 
       const response = await fetch(submitUrl, {
@@ -282,22 +262,10 @@ export default function DynamicForm({
         Enter the required information below to complete your submission.
       </p>
 
-      {/* Dynamic fields — rendered from Freshdesk field config.
-          Fields that belong to dynamic sections are skipped here —
-          they are rendered inline below their parent dropdown by renderField. */}
-      {fields
-        .filter((field) => !sectionFieldIds.has(field.id))
-        .map((field) =>
-          renderField(
-            field,
-            register,
-            control,
-            errors,
-            unregister,
-            sectionSelections,
-            onSectionChange,
-          ),
-        )}
+      {/* Dynamic fields — rendered from custom object schema field config */}
+      {fields.map((field) =>
+        renderCustomObjectField(field, register, control, errors),
+      )}
 
       {/* Hardcoded fields — not derived from Freshdesk config */}
       <ConsentField

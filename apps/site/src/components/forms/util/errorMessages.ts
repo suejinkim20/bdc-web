@@ -151,5 +151,5 @@ export const formStatus = {
   unavailableHeading: "This form isn't available right now.",
 
   // Default success heading — per-form follow-up copy is defined per form
-  successHeading: 'Your submission was received.',
+  successHeading: 'Submission Received',
 };
