@@ -1,6 +1,6 @@
 ---
 name: "Jason Williams"
-signifier: "M.D., FACR"
+signifier: "B.S."
 slug: "williams-jason"
 roles:
   - "Assistant Director, Diversity and Research Readiness"
