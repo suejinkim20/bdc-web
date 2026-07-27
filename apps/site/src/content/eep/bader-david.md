@@ -1,6 +1,6 @@
 ---
 name: "David A. Bader"
-signifier: "Ph.D., IEEE, ACM, AAAS, SIAM"
+signifier: "Ph.D., IEEE, ACM. AAAS, SIAM"
 slug: "bader-david"
 roles:
   - "Distinguished Professor and Director of the Institute for Data Science"
