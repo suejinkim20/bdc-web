@@ -6,6 +6,7 @@ layout: ../../layouts/Page.astro
 import Callout from '@components/Callout.astro';
 import InlineAlert from '@components/InlineAlert.astro';
 import Tooltip from '@components/Tooltip.tsx';
+import Icon from '@components/Icon.astro'
 
 <InlineAlert variant="info">
 These **Terms of Use** describe the conditions governing use of BDC and related resources. By accessing or using this website, users agree to comply with these terms.
@@ -52,11 +53,35 @@ Recipients of support through programs such as NHLBI BDC Pilot Funding Program o
 
 Standard [citation and acknowledgement language](https://bdcatalyst.gitbook.io/biodata-catalyst-documentation/community/citation-and-acknowledgement) is available in BDC documentation or can be copied from below.
 
-**For citation of BDC:**
-National Heart, Lung, and Blood Institute, National Institutes of Health, U.S. Department of Health and Human Services (2020). The NHLBI BioData Catalyst. Zenodo. [https://doi.org/10.5281/zenodo.3822858](https://doi.org/10.5281/zenodo.3822858)
+<div class="display-flex flex-align-center">
+  <p class="text-bold margin-0">For citation of BDC:</p>
+  <button
+    class="usa-button usa-button--outline margin-left-2"
+    aria-label="Copy to clipboard"
+    onclick="navigator.clipboard.writeText(document.getElementById('copy-target-citation').textContent.trim()).then(() => { const msg = this.nextElementSibling; msg.hidden = false; setTimeout(() => msg.hidden = true, 2000); })"
+  >
+    <span>Copy text below</span> <Icon name="content_copy" size={3} />
+  </button>
+  <span hidden class="font-sans-xs text-green margin-left-1">Copied!</span>
+</div>
+<div id="copy-target-citation" class="margin-top-05">
+  National Heart, Lung, and Blood Institute, National Institutes of Health, U.S. Department of Health and Human Services (2020). The NHLBI BioData Catalyst. Zenodo. [https://doi.org/10.5281/zenodo.3822858](https://doi.org/10.5281/zenodo.3822858)
+</div>
 
-**To acknowledge BDC, use:**
-The authors wish to acknowledge the contributions of the consortium working on the development of the NHLBI BioData Catalyst® (BDC) ecosystem.
+<div class="display-flex flex-align-center">
+  <p class="text-bold margin-0">To acknowledge BDC, use:</p>
+  <button
+    class="usa-button usa-button--outline margin-left-2"
+    aria-label="Copy to clipboard"
+    onclick="navigator.clipboard.writeText(document.getElementById('copy-target-acknowledgement').textContent.trim()).then(() => { const msg = this.nextElementSibling; msg.hidden = false; setTimeout(() => msg.hidden = true, 2000); })"
+  >
+    <span>Copy text below</span> <Icon name="content_copy" size={3} />
+  </button>
+  <span hidden class="font-sans-xs text-green margin-left-1">Copied!</span>
+</div>
+<div id="copy-target-acknowledgement">
+  The authors wish to acknowledge the contributions of the consortium working on the development of the NHLBI BioData Catalyst® (BDC) ecosystem.
+</div>
 
 <InlineAlert heading="Citing BDC" variant="info" noIcon>
   [View BDC Citation and Acknowledgement Guidance →](https://bdcatalyst.gitbook.io/biodata-catalyst-documentation/community/citation-and-acknowledgement)
