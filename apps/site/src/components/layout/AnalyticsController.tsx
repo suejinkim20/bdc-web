@@ -1,36 +1,42 @@
 import { useEffect } from 'react';
 
 type AnalyticsWindow = Window & {
-  dataLayer?: Array<Record<string, unknown>>;
-  __bdcGtmInitialized?: boolean;
+  dataLayer?: Array<unknown>;
+  gtag?: (...args: unknown[]) => void;
+  __bdcGaInitialized?: boolean;
   __bdcLastTrackedPath?: string;
 };
 
-function initGtm(gtmId: string) {
+function gtag(...args: unknown[]) {
+  const analyticsWindow = window as AnalyticsWindow;
+  analyticsWindow.dataLayer = analyticsWindow.dataLayer ?? [];
+  analyticsWindow.dataLayer.push(args);
+}
+
+function initGa(gaId: string) {
   const analyticsWindow = window as AnalyticsWindow;
 
-  if (analyticsWindow.__bdcGtmInitialized) return;
+  if (analyticsWindow.__bdcGaInitialized) return;
 
   analyticsWindow.dataLayer = analyticsWindow.dataLayer ?? [];
-  analyticsWindow.dataLayer.push({
-    'gtm.start': Date.now(),
-    event: 'gtm.js',
-  });
+  analyticsWindow.gtag = gtag;
 
   const existingScript = document.querySelector<HTMLScriptElement>(
-    `script[data-gtm-id="${gtmId}"]`,
+    `script[data-ga-id="${gaId}"]`,
   );
 
   if (!existingScript) {
-    const firstScript = document.getElementsByTagName('script')[0];
     const script = document.createElement('script');
     script.async = true;
-    script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
-    script.dataset.gtmId = gtmId;
-    firstScript?.parentNode?.insertBefore(script, firstScript);
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+    script.dataset.gaId = gaId;
+    document.head.appendChild(script);
   }
 
-  analyticsWindow.__bdcGtmInitialized = true;
+  gtag('js', new Date());
+  gtag('config', gaId, { send_page_view: false });
+
+  analyticsWindow.__bdcGaInitialized = true;
 }
 
 function trackPageView() {
@@ -40,8 +46,7 @@ function trackPageView() {
   if (analyticsWindow.__bdcLastTrackedPath === path) return;
 
   analyticsWindow.__bdcLastTrackedPath = path;
-  analyticsWindow.dataLayer?.push({
-    event: 'page_view',
+  analyticsWindow.gtag?.('event', 'page_view', {
     page_title: document.title,
     page_location: window.location.href,
     page_path: window.location.pathname,
@@ -50,14 +55,14 @@ function trackPageView() {
 }
 
 interface Props {
-  gtmId: string;
+  gaId: string;
 }
 
-export function AnalyticsController({ gtmId }: Props) {
+export function AnalyticsController({ gaId }: Props) {
   useEffect(() => {
-    if (!gtmId) return;
+    if (!gaId) return;
 
-    initGtm(gtmId);
+    initGa(gaId);
     trackPageView();
 
     const handleNavigation = () => {
@@ -69,7 +74,7 @@ export function AnalyticsController({ gtmId }: Props) {
     return () => {
       document.removeEventListener('astro:after-swap', handleNavigation);
     };
-  }, [gtmId]);
+  }, [gaId]);
 
   return null;
 }

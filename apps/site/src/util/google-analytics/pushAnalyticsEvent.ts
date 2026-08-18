@@ -6,7 +6,6 @@ export type AnalyticsParams = Record<
 export type DataLayerEvent = AnalyticsParams & { event: string };
 
 type AnalyticsWindow = Window & {
-  dataLayer?: Array<Record<string, unknown>>;
   gtag?: (
     command: 'event',
     eventName: string,
@@ -15,14 +14,16 @@ type AnalyticsWindow = Window & {
 };
 
 export function pushAnalyticsEvent(event: DataLayerEvent) {
+  if (typeof window === 'undefined') return;
+
   const analyticsWindow = window as AnalyticsWindow;
-  if (Array.isArray(analyticsWindow.dataLayer)) {
-    analyticsWindow.dataLayer.push(event);
-    return;
-  }
 
   if (typeof analyticsWindow.gtag === 'function') {
     const { event: eventName, ...params } = event;
+    console.log('[analytics] gtag():', eventName, params);
     analyticsWindow.gtag('event', eventName, params);
+    return;
   }
+
+  console.log('[analytics] gtag not found, event not sent:', event);
 }
