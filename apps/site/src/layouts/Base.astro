@@ -6,6 +6,8 @@ import { ModalController } from '@components/layout/ModalController';
 import SiteAlertList from '@components/layout/SiteAlertList.astro';
 import SiteFooter from '@components/layout/SiteFooter.astro';
 import { SiteHeader } from '@components/layout/SiteHeader';
+import SearchResultEnhancementTemplates from '@components/search/SearchResultEnhancementTemplates.astro';
+import SearchResultTemplates from '@components/search/SearchResultTemplates.astro';
 import '../styles/global.scss';
 
 interface Props {
@@ -14,9 +16,10 @@ interface Props {
   // Scopes the reCAPTCHA script to only pages that need it,
   // avoiding unnecessary Google script loading sitewide.
   enableRecaptcha?: boolean;
+  indexForSearch?: boolean;
 }
 
-const { title, enableRecaptcha = false } = Astro.props;
+const { title, enableRecaptcha = false, indexForSearch = true } = Astro.props;
 const isHomePage = Astro.url.pathname === '/';
 const displayTitle = title.includes('BioData Catalyst')
   ? title
@@ -54,6 +57,8 @@ const hasGa = typeof gaId === 'string' && gaId.length > 0;
         }
       </script>
     )}
+    <link href="/pagefind/pagefind-component-ui.css" rel="stylesheet" />
+    <script src="/pagefind/pagefind-component-ui.js" type="module"></script>
     <ClientRouter />
     {enableRecaptcha && (
       <script
@@ -62,16 +67,6 @@ const hasGa = typeof gaId === 'string' && gaId.length > 0;
         defer
       />
     )}
-    <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-      main {
-        flex: 1;
-      }
-    </style>
   </head>
   <body data-pagefind-ignore>
     {hasGa && <AnalyticsController client:only="react" />}
@@ -80,9 +75,25 @@ const hasGa = typeof gaId === 'string' && gaId.length > 0;
     <SiteHeader client:load transition:persist />
     <ExitNoticeController client:only="react" />
     <ModalController client:only="react" />
-    <main id="main-content" data-pagefind-body>
+    <SearchResultEnhancementTemplates />
+    <pagefind-modal instance="site-modal" reset-on-close>
+      <pagefind-modal-header>
+        <pagefind-input instance="site-modal"></pagefind-input>
+      </pagefind-modal-header>
+      <pagefind-modal-body>
+        <pagefind-summary instance="site-modal"></pagefind-summary>
+        <pagefind-results instance="site-modal">
+          <SearchResultTemplates />
+        </pagefind-results>
+      </pagefind-modal-body>
+      <pagefind-modal-footer>
+        <pagefind-keyboard-hints instance="site-modal"></pagefind-keyboard-hints>
+      </pagefind-modal-footer>
+    </pagefind-modal>
+    <main id="main-content" data-pagefind-body={indexForSearch || undefined} class="flex-1">
       <slot />
     </main>
     <SiteFooter />
+    <script src="../scripts/init-search-modal.ts"></script>
   </body>
 </html>

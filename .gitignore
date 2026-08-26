@@ -6,7 +6,10 @@ dist
 **/.env.*
 test-results
 .lycheecache
+!.env.example
 
 # apps/freshdesk
 Pipfile
 Pipfile.lock
+
+.lycheecache
