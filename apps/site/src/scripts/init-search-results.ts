@@ -84,6 +84,7 @@ async function loadSearchResults(
   if (searchToken !== activeSearchToken) return;
 
   const search = await pagefind.search(trimmedQuery);
+  console.log('Pagefind search response:', { query: trimmedQuery, search });
   if (searchToken !== activeSearchToken) return;
 
   const loadedResults = await Promise.all(

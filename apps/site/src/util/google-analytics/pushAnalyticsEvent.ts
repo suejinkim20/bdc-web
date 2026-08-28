@@ -18,7 +18,8 @@ export function pushAnalyticsEvent(event: DataLayerEvent) {
 
   if (typeof analyticsWindow.gtag === 'function') {
     const { event: eventName, ...params } = event;
-    analyticsWindow.gtag('event', eventName, params);
+    console.log('Pushing analytics event:', eventName, params);
+    // analyticsWindow.gtag('event', eventName, params);
     return;
   }
 }

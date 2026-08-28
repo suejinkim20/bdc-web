@@ -76,7 +76,7 @@ const hasGa = typeof gaId === 'string' && gaId.length > 0;
     <ExitNoticeController client:only="react" />
     <ModalController client:only="react" />
     <SearchResultEnhancementTemplates />
-    <pagefind-modal instance="site-modal" reset-on-close>
+    <pagefind-modal instance="site-modal" reset-on-close data-analytics-section="search_modal">
       <pagefind-modal-header>
         <pagefind-input instance="site-modal"></pagefind-input>
       </pagefind-modal-header>

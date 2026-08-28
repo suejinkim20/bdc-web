@@ -3,6 +3,7 @@ import { pushAnalyticsEvent } from '../../util/google-analytics/pushAnalyticsEve
 import { trackFooterInteraction } from './analytics/footer';
 import { trackInPageNavInteraction } from './analytics/inPageNav';
 import { trackNavInteraction } from './analytics/nav';
+import { trackSearchModalInteraction } from './analytics/searchModal';
 import {
   type AnalyticsElement,
   getAnalyticsEvent,
@@ -75,6 +76,11 @@ export function AnalyticsController() {
           return;
         case 'in_page_nav':
           trackInPageNavInteraction(interactiveElement);
+          return;
+        // Search modal clicks need extra Pagefind-derived fields, so route them
+        // to the dedicated handler instead of the generic custom-event path.
+        case 'search_modal':
+          trackSearchModalInteraction(interactiveElement);
           return;
         default:
           pushCustomAnalyticsEvent(interactiveElement);
